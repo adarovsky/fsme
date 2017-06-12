@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EditorTransition</class>
+ <widget class="QWidget" name="EditorTransition">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>860</width>
+    <height>527</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QLineEdit" name="nameField"/>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="commentField"/>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <property name="verticalSpacing">
+      <number>0</number>
+     </property>
+     <item row="1" column="7">
+      <widget class="QListView" name="availableActions"/>
+     </item>
+     <item row="1" column="6">
+      <layout class="QVBoxLayout" name="verticalLayout_11">
+       <item>
+        <spacer name="verticalSpacer_7">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QToolButton" name="removeAction">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="ui.qrc">
+           <normaloff>:/images/right.png</normaloff>:/images/right.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="addAction">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="ui.qrc">
+           <normaloff>:/images/back.png</normaloff>:/images/back.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_8">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item row="0" column="5">
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QToolButton" name="moveActionUp">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="ui.qrc">
+           <normaloff>:/images/up.png</normaloff>:/images/up.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="moveActionDown">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="ui.qrc">
+           <normaloff>:/images/down.png</normaloff>:/images/down.png</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="0" column="2">
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QToolButton" name="moveTransitionUp">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="ui.qrc">
+           <normaloff>:/images/up.png</normaloff>:/images/up.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="moveTransitionDown">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="ui.qrc">
+           <normaloff>:/images/down.png</normaloff>:/images/down.png</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="0" colspan="3">
+      <widget class="TextEdit" name="conditionField"/>
+     </item>
+     <item row="0" column="7">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Available</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <property name="buddy">
+        <cstring>listView_2</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QComboBox" name="transitionTypeField">
+       <item>
+        <property name="text">
+         <string>Simple</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Transite</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Return</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="1" column="3" colspan="3">
+      <widget class="QListView" name="actionList"/>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>In</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <property name="buddy">
+        <cstring>listView</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="4">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>&amp;Simple</string>
+         </property>
+         <property name="buddy">
+          <cstring>destinationField</cstring>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="destinationField">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>&amp;Transite</string>
+         </property>
+         <property name="buddy">
+          <cstring>transiteDestinationField</cstring>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="transiteDestinationField">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>textedit.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="ui.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>moveActionUp</sender>
+   <signal>clicked()</signal>
+   <receiver>EditorTransition</receiver>
+   <slot>moveActionUp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>505</x>
+     <y>286</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>476</x>
+     <y>593</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>moveActionDown</sender>
+   <signal>clicked()</signal>
+   <receiver>EditorTransition</receiver>
+   <slot>moveActionDown()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>527</x>
+     <y>279</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>531</x>
+     <y>576</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>removeAction</sender>
+   <signal>clicked()</signal>
+   <receiver>EditorTransition</receiver>
+   <slot>removeAction()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>565</x>
+     <y>379</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>567</x>
+     <y>600</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>addAction</sender>
+   <signal>clicked()</signal>
+   <receiver>EditorTransition</receiver>
+   <slot>addAction()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>568</x>
+     <y>408</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>570</x>
+     <y>538</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>moveTransitionUp</sender>
+   <signal>clicked()</signal>
+   <receiver>EditorTransition</receiver>
+   <slot>moveTransitionUp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>232</x>
+     <y>280</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>241</x>
+     <y>592</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>moveTransitionDown</sender>
+   <signal>clicked()</signal>
+   <receiver>EditorTransition</receiver>
+   <slot>moveTransitionDown()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>261</x>
+     <y>277</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>267</x>
+     <y>543</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>destinationField</sender>
+   <signal>activated(QString)</signal>
+   <receiver>EditorTransition</receiver>
+   <slot>setDestination(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>129</x>
+     <y>514</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>125</x>
+     <y>552</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>addAction()</slot>
+  <slot>availSelectionChanged()</slot>
+  <slot>removeAction()</slot>
+  <slot>moveActionUp()</slot>
+  <slot>moveActionDown()</slot>
+  <slot>moveTransitionUp()</slot>
+  <slot>moveTransitionDown()</slot>
+  <slot>setDestination(QString)</slot>
+ </slots>
+</ui>

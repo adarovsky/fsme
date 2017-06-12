@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1123</width>
+    <height>585</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="toolButtonStyle">
+   <enum>Qt::ToolButtonFollowStyle</enum>
+  </property>
+  <property name="documentMode">
+   <bool>true</bool>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>true</bool>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <widget class="QSplitter" name="treeSplitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QWidget" name="layoutWidget">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QTreeView" name="treeView">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QSplitter" name="editorSplitter">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <widget class="QGraphicsView" name="diagramView">
+        <property name="renderHints">
+         <set>QPainter::Antialiasing|QPainter::TextAntialiasing</set>
+        </property>
+       </widget>
+       <widget class="QFrame" name="frame">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="EditorPanel" name="editorStack">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>200</height>
+            </size>
+           </property>
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <widget class="QWidget" name="noSelection">
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <widget class="QLabel" name="label_2">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>No selection</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="multipleSelection">
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <widget class="QLabel" name="label">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Multiple items selected</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="EditorRoot" name="editorRoot"/>
+           <widget class="EditorEvent" name="editorEvent"/>
+           <widget class="EditorInput" name="editorInput"/>
+           <widget class="EditorOutput" name="editorOutput"/>
+           <widget class="EditorState" name="editorState"/>
+           <widget class="EditorTransition" name="editorTransition"/>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1123</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_File">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <widget class="QMenu" name="recentFiles">
+     <property name="title">
+      <string>Open &amp;Recent</string>
+     </property>
+    </widget>
+    <addaction name="action_New"/>
+    <addaction name="action_Open"/>
+    <addaction name="recentFiles"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSaveAs"/>
+    <addaction name="separator"/>
+    <addaction name="action_Print"/>
+    <addaction name="separator"/>
+    <addaction name="action_Quit"/>
+   </widget>
+   <widget class="QMenu" name="menu_Edit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="action_Fit_Scale"/>
+    <addaction name="action_Original_Scale"/>
+   </widget>
+   <addaction name="menu_File"/>
+   <addaction name="menu_Edit"/>
+   <addaction name="menuView"/>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>24</width>
+     <height>24</height>
+    </size>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionAdd"/>
+   <addaction name="actionDelete"/>
+   <addaction name="separator"/>
+   <addaction name="actionUndo"/>
+   <addaction name="actionRedo"/>
+   <addaction name="separator"/>
+   <addaction name="action_Fit_Scale"/>
+   <addaction name="action_Original_Scale"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <action name="action_New">
+   <property name="text">
+    <string>&amp;New</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="action_Open">
+   <property name="text">
+    <string>&amp;Open</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionClear_List">
+   <property name="text">
+    <string>Clear List</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>&amp;Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSaveAs">
+   <property name="text">
+    <string>Save &amp;As…</string>
+   </property>
+  </action>
+  <action name="action_Quit">
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="action_Print">
+   <property name="text">
+    <string>&amp;Print</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="action_Fit_Scale">
+   <property name="icon">
+    <iconset resource="ui.qrc">
+     <normaloff>:/images/scale-fit.png</normaloff>:/images/scale-fit.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Fit Scale</string>
+   </property>
+   <property name="iconText">
+    <string>Fit</string>
+   </property>
+  </action>
+  <action name="action_Original_Scale">
+   <property name="icon">
+    <iconset resource="ui.qrc">
+     <normaloff>:/images/scale-original.png</normaloff>:/images/scale-original.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Original Scale</string>
+   </property>
+   <property name="iconText">
+    <string>Original</string>
+   </property>
+  </action>
+  <action name="actionAdd">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="ui.qrc">
+     <normaloff>:/images/add.png</normaloff>:/images/add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add New</string>
+   </property>
+   <property name="toolTip">
+    <string>Add New…</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+N</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="icon">
+    <iconset resource="ui.qrc">
+     <normaloff>:/images/undo.png</normaloff>:/images/undo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Undo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="icon">
+    <iconset resource="ui.qrc">
+     <normaloff>:/images/redo.png</normaloff>:/images/redo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Redo</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="icon">
+    <iconset resource="ui.qrc">
+     <normaloff>:/images/delete.png</normaloff>:/images/delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>EditorPanel</class>
+   <extends>QStackedWidget</extends>
+   <header>editorpanel.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>EditorEvent</class>
+   <extends>QWidget</extends>
+   <header>editorevent.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>EditorInput</class>
+   <extends>QWidget</extends>
+   <header>editorinput.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>EditorOutput</class>
+   <extends>QWidget</extends>
+   <header>editoroutput.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>EditorState</class>
+   <extends>QWidget</extends>
+   <header>editorstate.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>EditorTransition</class>
+   <extends>QWidget</extends>
+   <header>editortransition.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>EditorRoot</class>
+   <extends>QWidget</extends>
+   <header>editorroot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="ui.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>actionDelete</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>deleteItems()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>561</x>
+     <y>292</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>deleteItems()</slot>
+ </slots>
+</ui>

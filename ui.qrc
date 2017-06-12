@@ -1,0 +1,34 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/add.png</file>
+        <file>images/add@2x.png</file>
+        <file>images/back.png</file>
+        <file>images/back@2x.png</file>
+        <file>images/down.png</file>
+        <file>images/down@2x.png</file>
+        <file>images/minus.png</file>
+        <file>images/minus@2x.png</file>
+        <file>images/plus.png</file>
+        <file>images/plus@2x.png</file>
+        <file>images/redo.png</file>
+        <file>images/redo@2x.png</file>
+        <file>images/right.png</file>
+        <file>images/right@2x.png</file>
+        <file>images/scale-fit.png</file>
+        <file>images/scale-fit@2x.png</file>
+        <file>images/scale-original.png</file>
+        <file>images/scale-original@2x.png</file>
+        <file>images/undo.png</file>
+        <file>images/undo@2x.png</file>
+        <file>images/up.png</file>
+        <file>images/up@2x.png</file>
+        <file>images/input.png</file>
+        <file>images/input@2x.png</file>
+        <file>images/output.png</file>
+        <file>images/output@2x.png</file>
+        <file>images/event.png</file>
+        <file>images/event@2x.png</file>
+        <file>images/delete.png</file>
+        <file>images/delete@2x.png</file>
+    </qresource>
+</RCC>

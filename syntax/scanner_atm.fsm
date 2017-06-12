@@ -1,0 +1,2799 @@
+<!DOCTYPE FSM>
+<FSM>
+    <statemachine>
+        <name>FSMScanner</name>
+        <comment></comment>
+        <baseclass></baseclass>
+        <initialstate>yUnknown</initialstate>
+        <event>
+            <name>eEnd</name>
+            <comment></comment>
+        </event>
+        <event>
+            <name>eSymbol</name>
+            <comment></comment>
+        </event>
+        <input>
+            <name>isMul</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isE</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isMore</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isSimpleDelim</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isNumber</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isStroke</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isNewLine</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isX</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isDot</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isAmp</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isDiv</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isLess</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isMinus</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isQuote</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isEqual</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isEscape</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isPunct</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isSpace</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isKeyword</name>
+            <comment>авляется ли частично построенный токен ключевым словом</comment>
+        </input>
+        <input>
+            <name>isDoubleQuote</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isPlus</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isAlpha</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isInclude</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isHash</name>
+            <comment></comment>
+        </input>
+        <output>
+            <name>zAppendToCur</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>zAddStringToken</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>zReportUnexpectedEndOfFile</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>zReportError</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>zIncludeDefaultFile</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>zBackupPos</name>
+            <comment>Сохранить текущую позицию</comment>
+        </output>
+        <output>
+            <name>zAddSymbolToken</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>zClearToken</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>zIncludeLocalFile</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>zReportInvalidDouble</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>zAddDoubleToken</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>zPushBack</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>zReportInvalidInclude</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>zAddCharToken</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>zAddIntToken</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>zAddKeywordToken</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>zAddIndentToken</name>
+            <comment></comment>
+        </output>
+        <state>
+            <name>yReadMantissa</name>
+            <comment></comment>
+            <incomeactions>
+                <action>zAppendToCur</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>read_power</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isNumber</condition>
+                    <destination>yReadMantissa</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>finish</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; !isNumber</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zPushBack</action>
+                        <action>zAddDoubleToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>end</name>
+                    <comment></comment>
+                    <condition>eEnd</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAddDoubleToken</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yReadNumber</name>
+            <comment></comment>
+            <incomeactions>
+                <action>zAppendToCur</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>read_number</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isNumber</condition>
+                    <destination>yReadNumber</destination>
+                    <transitionactions/>
+                </transition>
+                <transition>
+                    <name>its_real</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isDot</condition>
+                    <destination>yReadReal</destination>
+                    <transitionactions/>
+                </transition>
+                <transition>
+                    <name>read_mantissa</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isE</condition>
+                    <destination>yReadMantissaSign</destination>
+                    <transitionactions/>
+                </transition>
+                <transition>
+                    <name>error</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isAlpha</condition>
+                    <destination>yError</destination>
+                    <transitionactions>
+                        <action>zReportInvalidDouble</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>number_finished</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; !isNumber</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zPushBack</action>
+                        <action>zAddIntToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>end</name>
+                    <comment></comment>
+                    <condition>eEnd</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAddIntToken</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yReadDot</name>
+            <comment></comment>
+            <incomeactions>
+                <action>zAppendToCur</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>number_came</name>
+                    <comment></comment>
+                    <condition>isNumber</condition>
+                    <destination>yReadReal</destination>
+                    <transitionactions/>
+                </transition>
+                <transition>
+                    <name>just_a_dot</name>
+                    <comment></comment>
+                    <condition>!isNumber</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zPushBack</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yReadMore</name>
+            <comment></comment>
+            <incomeactions>
+                <action>zAppendToCur</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>more_eq</name>
+                    <comment></comment>
+                    <condition>isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>just_more</name>
+                    <comment></comment>
+                    <condition>!isMore &amp;&amp; !isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zPushBack</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>shift</name>
+                    <comment></comment>
+                    <condition>isMore</condition>
+                    <destination>yReadRightShift</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yMayBeComment</name>
+            <comment></comment>
+            <incomeactions>
+                <action>zAppendToCur</action>
+                <action>zBackupPos</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>multi_line_comment</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isMul</condition>
+                    <destination>yReadMultiLineComment</destination>
+                    <transitionactions>
+                        <action>zClearToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>single_line comment</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isDiv</condition>
+                    <destination>yReadSingleLineComment</destination>
+                    <transitionactions>
+                        <action>zClearToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>just_del</name>
+                    <comment></comment>
+                    <condition>eSymbol || eEnd</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAddKeywordToken</action>
+                        <action>zPushBack</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yProcessLocalInclude</name>
+            <comment>Включить файл (препроцессор)</comment>
+            <incomeactions/>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>check_new_line</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isNewLine</condition>
+                    <destination>yError</destination>
+                    <transitionactions>
+                        <action>zReportInvalidInclude</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>read_name</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; !isDoubleQuote</condition>
+                    <destination>yProcessLocalInclude</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>finish</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isDoubleQuote</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zIncludeLocalFile</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yEatWhitespace</name>
+            <comment></comment>
+            <incomeactions/>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>read_space</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isSpace</condition>
+                    <destination>yEatWhitespace</destination>
+                    <transitionactions/>
+                </transition>
+                <transition>
+                    <name>back</name>
+                    <comment></comment>
+                    <condition>!isSpace</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zPushBack</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yReadLess</name>
+            <comment></comment>
+            <incomeactions>
+                <action>zAppendToCur</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>less_eq</name>
+                    <comment></comment>
+                    <condition>isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>shift</name>
+                    <comment></comment>
+                    <condition>isLess</condition>
+                    <destination>yReadLeftShift</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>just_less</name>
+                    <comment></comment>
+                    <condition>!isLess &amp;&amp; !isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zPushBack</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yPlus</name>
+            <comment></comment>
+            <incomeactions>
+                <action>zAppendToCur</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>inrement</name>
+                    <comment></comment>
+                    <condition>isPlus</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>modify_assign</name>
+                    <comment></comment>
+                    <condition>isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>just_plus</name>
+                    <comment></comment>
+                    <condition>!isPlus &amp;&amp; !isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zPushBack</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yAmp</name>
+            <comment></comment>
+            <incomeactions>
+                <action>zAppendToCur</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>inrement</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isAmp</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>modify_assign</name>
+                    <comment></comment>
+                    <condition>isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>just_plus</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; !isAmp &amp;&amp; !isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zPushBack</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yReadString</name>
+            <comment></comment>
+            <incomeactions/>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>string_finished</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isDoubleQuote</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAddStringToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>read_string</name>
+                    <comment></comment>
+                    <condition>eSymbol</condition>
+                    <destination>yReadString</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>error</name>
+                    <comment></comment>
+                    <condition>eEnd</condition>
+                    <destination>yError</destination>
+                    <transitionactions>
+                        <action>zReportUnexpectedEndOfFile</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yReadComplexOperator</name>
+            <comment></comment>
+            <incomeactions>
+                <action>zAppendToCur</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>modify_assign</name>
+                    <comment></comment>
+                    <condition>isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>just_symbol</name>
+                    <comment></comment>
+                    <condition>eSymbol</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zPushBack</action>
+                        <action>zAddSymbolToken</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yEatWS</name>
+            <comment></comment>
+            <incomeactions/>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>eat_ws</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isSpace</condition>
+                    <destination>yEatWS</destination>
+                    <transitionactions/>
+                </transition>
+                <transition>
+                    <name>process_local_include</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isDoubleQuote</condition>
+                    <destination>yProcessLocalInclude</destination>
+                    <transitionactions/>
+                </transition>
+                <transition>
+                    <name>process_default_include</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isLess</condition>
+                    <destination>yProcessDefaultInclude</destination>
+                    <transitionactions/>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yReadDoubleEq</name>
+            <comment></comment>
+            <incomeactions>
+                <action>zAppendToCur</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>read_delim</name>
+                    <comment></comment>
+                    <condition>isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>just_eq</name>
+                    <comment></comment>
+                    <condition>!isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zPushBack</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yProcessDefaultInclude</name>
+            <comment></comment>
+            <incomeactions/>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>check_new_line</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isNewLine</condition>
+                    <destination>yError</destination>
+                    <transitionactions>
+                        <action>zReportInvalidInclude</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>read_name</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; !isMore</condition>
+                    <destination>yProcessDefaultInclude</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>finish</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isMore</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zIncludeDefaultFile</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yReadSingleLineComment</name>
+            <comment></comment>
+            <incomeactions/>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>end_of_comment</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isNewLine</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zClearToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>eat_me</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; !isNewLine</condition>
+                    <destination>yReadSingleLineComment</destination>
+                    <transitionactions/>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yReadReal</name>
+            <comment>прочитать дробное число</comment>
+            <incomeactions>
+                <action>zAppendToCur</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>read_digit</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isNumber</condition>
+                    <destination>yReadReal</destination>
+                    <transitionactions/>
+                </transition>
+                <transition>
+                    <name>read_mantissa</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isE</condition>
+                    <destination>yReadMantissaSign</destination>
+                    <transitionactions/>
+                </transition>
+                <transition>
+                    <name>number_finished</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; !isNumber</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zPushBack</action>
+                        <action>zAddDoubleToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>end</name>
+                    <comment></comment>
+                    <condition>eEnd</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAddDoubleToken</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yFinishMultiLineComment</name>
+            <comment></comment>
+            <incomeactions/>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>end_of_comment</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isDiv</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zClearToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>just_a_asteric</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; !isDiv</condition>
+                    <destination>yReadMultiLineComment</destination>
+                    <transitionactions>
+                        <action>zPushBack</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>end_of_file</name>
+                    <comment></comment>
+                    <condition>eEnd</condition>
+                    <destination>yError</destination>
+                    <transitionactions>
+                        <action>zReportUnexpectedEndOfFile</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yReadMantissaFirst</name>
+            <comment></comment>
+            <incomeactions>
+                <action>zAppendToCur</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>read_number</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isNumber</condition>
+                    <destination>yReadMantissa</destination>
+                    <transitionactions/>
+                </transition>
+                <transition>
+                    <name>error</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; !isNumber</condition>
+                    <destination>yError</destination>
+                    <transitionactions>
+                        <action>zReportInvalidDouble</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yReadIndent</name>
+            <comment></comment>
+            <incomeactions>
+                <action>zAppendToCur</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>read_next_sym</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; ( isAlpha || isNumber )</condition>
+                    <destination>yReadIndent</destination>
+                    <transitionactions/>
+                </transition>
+                <transition>
+                    <name>keyword_finished</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isKeyword</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAddKeywordToken</action>
+                        <action>zPushBack</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>token_finished</name>
+                    <comment></comment>
+                    <condition>eSymbol || eEnd</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAddIndentToken</action>
+                        <action>zPushBack</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yMinus</name>
+            <comment></comment>
+            <incomeactions>
+                <action>zAppendToCur</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>decrement</name>
+                    <comment></comment>
+                    <condition>isMinus</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>modify_assign</name>
+                    <comment></comment>
+                    <condition>isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>just_minus</name>
+                    <comment></comment>
+                    <condition>!isMinus &amp;&amp; !isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zPushBack</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yReadMultiLineComment</name>
+            <comment></comment>
+            <incomeactions/>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>may_be_end</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isMul</condition>
+                    <destination>yFinishMultiLineComment</destination>
+                    <transitionactions/>
+                </transition>
+                <transition>
+                    <name>eat_contents</name>
+                    <comment></comment>
+                    <condition>eSymbol</condition>
+                    <destination>yReadMultiLineComment</destination>
+                    <transitionactions/>
+                </transition>
+                <transition>
+                    <name>end_of_input</name>
+                    <comment></comment>
+                    <condition>eEnd</condition>
+                    <destination>yError</destination>
+                    <transitionactions>
+                        <action>zReportUnexpectedEndOfFile</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yReadRightShift</name>
+            <comment></comment>
+            <incomeactions/>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>shift_modify</name>
+                    <comment></comment>
+                    <condition>isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>just_shift</name>
+                    <comment></comment>
+                    <condition>!isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zPushBack</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yReadMantissaSign</name>
+            <comment>Прочитать знак мантиссы</comment>
+            <incomeactions>
+                <action>zAppendToCur</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>read_sign</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; (isPlus || isMinus)</condition>
+                    <destination>yReadMantissaFirst</destination>
+                    <transitionactions/>
+                </transition>
+                <transition>
+                    <name>is_number</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isNumber</condition>
+                    <destination>yReadMantissa</destination>
+                    <transitionactions/>
+                </transition>
+                <transition>
+                    <name>error</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; !isNumber</condition>
+                    <destination>yError</destination>
+                    <transitionactions>
+                        <action>zReportInvalidDouble</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yError</name>
+            <comment></comment>
+            <incomeactions>
+                <action>zReportError</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions/>
+        </state>
+        <state>
+            <name>yReadLeftShift</name>
+            <comment></comment>
+            <incomeactions/>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>shift_modify</name>
+                    <comment></comment>
+                    <condition>isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>just_shift</name>
+                    <comment></comment>
+                    <condition>!isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zPushBack</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yReadChar</name>
+            <comment></comment>
+            <incomeactions/>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>char_finished</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isQuote</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAddCharToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>read_char</name>
+                    <comment></comment>
+                    <condition>eSymbol</condition>
+                    <destination>yReadChar</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>error</name>
+                    <comment></comment>
+                    <condition>eEnd</condition>
+                    <destination>yError</destination>
+                    <transitionactions/>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yStroke</name>
+            <comment></comment>
+            <incomeactions>
+                <action>zAppendToCur</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>inrement</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isStroke</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>modify_assign</name>
+                    <comment></comment>
+                    <condition>isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>just_plus</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; !isStroke &amp;&amp; !isEqual</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zPushBack</action>
+                        <action>zAddKeywordToken</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yUnknown</name>
+            <comment>неизвестный тип символа</comment>
+            <incomeactions>
+                <action>zBackupPos</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>may_be_comment</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isDiv</condition>
+                    <destination>yMayBeComment</destination>
+                    <transitionactions/>
+                </transition>
+                <transition>
+                    <name>read_macro</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isHash</condition>
+                    <destination>yEatWS</destination>
+                    <transitionactions/>
+                </transition>
+                <transition>
+                    <name>eat_whitespace</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isSpace</condition>
+                    <destination>yEatWhitespace</destination>
+                    <transitionactions/>
+                </transition>
+                <transition>
+                    <name>read_indent</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isAlpha</condition>
+                    <destination>yReadIndent</destination>
+                    <transitionactions>
+                        <action>zBackupPos</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>read_char</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isQuote</condition>
+                    <destination>yReadChar</destination>
+                    <transitionactions>
+                        <action>zBackupPos</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>read_string</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isDoubleQuote</condition>
+                    <destination>yReadString</destination>
+                    <transitionactions>
+                        <action>zBackupPos</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>read_number</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isNumber</condition>
+                    <destination>yReadNumber</destination>
+                    <transitionactions>
+                        <action>zBackupPos</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>read_dot</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isDot</condition>
+                    <destination>yReadDot</destination>
+                    <transitionactions>
+                        <action>zBackupPos</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>read_simple_delim</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isSimpleDelim</condition>
+                    <destination>yUnknown</destination>
+                    <transitionactions>
+                        <action>zBackupPos</action>
+                        <action>zAppendToCur</action>
+                        <action>zAddSymbolToken</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>complex_shift_left</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isLess</condition>
+                    <destination>yReadLess</destination>
+                    <transitionactions>
+                        <action>zBackupPos</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>complex_shift_right</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isMore</condition>
+                    <destination>yReadMore</destination>
+                    <transitionactions>
+                        <action>zBackupPos</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>read_double_eq</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isEqual</condition>
+                    <destination>yReadDoubleEq</destination>
+                    <transitionactions>
+                        <action>zBackupPos</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>read_double_plus</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isPlus</condition>
+                    <destination>yPlus</destination>
+                    <transitionactions>
+                        <action>zBackupPos</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>read_double_minus</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isMinus</condition>
+                    <destination>yMinus</destination>
+                    <transitionactions>
+                        <action>zBackupPos</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>read_double_stroke</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isStroke</condition>
+                    <destination>yStroke</destination>
+                    <transitionactions>
+                        <action>zBackupPos</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>read_double_amp</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isAmp</condition>
+                    <destination>yAmp</destination>
+                    <transitionactions>
+                        <action>zBackupPos</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>complex_op</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isPunct</condition>
+                    <destination>yReadComplexOperator</destination>
+                    <transitionactions>
+                        <action>zBackupPos</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>yReadMacro</name>
+            <comment></comment>
+            <incomeactions/>
+            <outcomeactions/>
+            <transitions>
+                <transition>
+                    <name>collect_name</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; isAlpha</condition>
+                    <destination>yReadMacro</destination>
+                    <transitionactions>
+                        <action>zAppendToCur</action>
+                    </transitionactions>
+                </transition>
+                <transition>
+                    <name>finish_name</name>
+                    <comment></comment>
+                    <condition>eSymbol &amp;&amp; !isAlpha &amp;&amp; isInclude</condition>
+                    <destination>yEatWS</destination>
+                    <transitionactions>
+                        <action>zClearToken</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+    </statemachine>
+    <graphics>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yReadMantissa</string>
+                <QPoint name="position" >
+                    <int name="x" >5528</int>
+                    <int name="y" >5576</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yReadReal</string>
+                <QPoint name="position" >
+                    <int name="x" >5368</int>
+                    <int name="y" >5560</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yFinishMultiLineComment</string>
+                <QPoint name="position" >
+                    <int name="x" >5608</int>
+                    <int name="y" >5784</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yReadChar</string>
+                <QPoint name="position" >
+                    <int name="x" >5208</int>
+                    <int name="y" >5160</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yError</string>
+                <QPoint name="position" >
+                    <int name="x" >5720</int>
+                    <int name="y" >5176</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yEatWhitespace</string>
+                <QPoint name="position" >
+                    <int name="x" >5208</int>
+                    <int name="y" >5016</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yReadMore</string>
+                <QPoint name="position" >
+                    <int name="x" >5208</int>
+                    <int name="y" >5304</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yReadDoubleEq</string>
+                <QPoint name="position" >
+                    <int name="x" >5208</int>
+                    <int name="y" >5208</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yReadDot</string>
+                <QPoint name="position" >
+                    <int name="x" >5208</int>
+                    <int name="y" >5560</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yProcessDefaultInclude</string>
+                <QPoint name="position" >
+                    <int name="x" >5528</int>
+                    <int name="y" >5704</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yReadMantissaFirst</string>
+                <QPoint name="position" >
+                    <int name="x" >5528</int>
+                    <int name="y" >5544</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yReadMacro</string>
+                <QPoint name="position" >
+                    <int name="x" >5208</int>
+                    <int name="y" >5672</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yReadSingleLineComment</string>
+                <QPoint name="position" >
+                    <int name="x" >5384</int>
+                    <int name="y" >5864</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yReadString</string>
+                <QPoint name="position" >
+                    <int name="x" >5208</int>
+                    <int name="y" >5112</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yReadIndent</string>
+                <QPoint name="position" >
+                    <int name="x" >5208</int>
+                    <int name="y" >5064</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yMinus</string>
+                <QPoint name="position" >
+                    <int name="x" >5208</int>
+                    <int name="y" >5400</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yProcessLocalInclude</string>
+                <QPoint name="position" >
+                    <int name="x" >5528</int>
+                    <int name="y" >5640</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yReadLess</string>
+                <QPoint name="position" >
+                    <int name="x" >5208</int>
+                    <int name="y" >5256</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yPlus</string>
+                <QPoint name="position" >
+                    <int name="x" >5208</int>
+                    <int name="y" >5352</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yStroke</string>
+                <QPoint name="position" >
+                    <int name="x" >5208</int>
+                    <int name="y" >5912</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yMayBeComment</string>
+                <QPoint name="position" >
+                    <int name="x" >5208</int>
+                    <int name="y" >5832</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yReadNumber</string>
+                <QPoint name="position" >
+                    <int name="x" >5208</int>
+                    <int name="y" >5496</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yReadMultiLineComment</string>
+                <QPoint name="position" >
+                    <int name="x" >5384</int>
+                    <int name="y" >5784</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yReadComplexOperator</string>
+                <QPoint name="position" >
+                    <int name="x" >5208</int>
+                    <int name="y" >5448</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yEatWS</string>
+                <QPoint name="position" >
+                    <int name="x" >5368</int>
+                    <int name="y" >5672</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yAmp</string>
+                <QPoint name="position" >
+                    <int name="x" >5208</int>
+                    <int name="y" >5976</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yReadMantissaSign</string>
+                <QPoint name="position" >
+                    <int name="x" >5528</int>
+                    <int name="y" >5496</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yUnknown</string>
+                <QPoint name="position" >
+                    <int name="x" >5016</int>
+                    <int name="y" >5256</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yReadRightShift</string>
+                <QPoint name="position" >
+                    <int name="x" >5400</int>
+                    <int name="y" >5304</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GStateSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GStateSaver" >
+                <string name="stateName" >yReadLeftShift</string>
+                <QPoint name="position" >
+                    <int name="x" >5400</int>
+                    <int name="y" >5256</int>
+                </QPoint>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadNumber</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5363</int>
+                        <int name="y" >5509</int>
+                    </QPoint>
+                    <QPoint>
+                        <int name="x" >5332</int>
+                        <int name="y" >5582</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadNumber</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadNumber</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadNumber</string>
+                <int name="transition" >3</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadNumber</string>
+                <int name="transition" >4</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadNumber</string>
+                <int name="transition" >5</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadMantissa</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5692</int>
+                        <int name="y" >5589</int>
+                    </QPoint>
+                    <QPoint>
+                        <int name="x" >5659</int>
+                        <int name="y" >5666</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadMantissa</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadMantissa</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadMore</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadMore</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadMore</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadDot</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadDot</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yProcessLocalInclude</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yProcessLocalInclude</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5757</int>
+                        <int name="y" >5653</int>
+                    </QPoint>
+                    <QPoint>
+                        <int name="x" >5712</int>
+                        <int name="y" >5761</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yProcessLocalInclude</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yMayBeComment</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yMayBeComment</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yMayBeComment</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadLess</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadLess</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadLess</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yEatWhitespace</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5383</int>
+                        <int name="y" >5029</int>
+                    </QPoint>
+                    <QPoint>
+                        <int name="x" >5348</int>
+                        <int name="y" >5111</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yEatWhitespace</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5057</int>
+                        <int name="y" >5002</int>
+                    </QPoint>
+                    <QPoint>
+                        <int name="x" >5008</int>
+                        <int name="y" >5195</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yPlus</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yPlus</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yPlus</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yAmp</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yAmp</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5105</int>
+                        <int name="y" >5686</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yAmp</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5081</int>
+                        <int name="y" >5793</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadString</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadString</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5342</int>
+                        <int name="y" >5125</int>
+                    </QPoint>
+                    <QPoint>
+                        <int name="x" >5315</int>
+                        <int name="y" >5188</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadString</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadComplexOperator</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadComplexOperator</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadDoubleEq</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadDoubleEq</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yEatWS</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5463</int>
+                        <int name="y" >5685</int>
+                    </QPoint>
+                    <QPoint>
+                        <int name="x" >5444</int>
+                        <int name="y" >5730</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yEatWS</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yEatWS</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yProcessDefaultInclude</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yProcessDefaultInclude</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5773</int>
+                        <int name="y" >5717</int>
+                    </QPoint>
+                    <QPoint>
+                        <int name="x" >5724</int>
+                        <int name="y" >5832</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yProcessDefaultInclude</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadSingleLineComment</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadSingleLineComment</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5659</int>
+                        <int name="y" >5877</int>
+                    </QPoint>
+                    <QPoint>
+                        <int name="x" >5605</int>
+                        <int name="y" >6007</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadReal</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5490</int>
+                        <int name="y" >5573</int>
+                    </QPoint>
+                    <QPoint>
+                        <int name="x" >5465</int>
+                        <int name="y" >5630</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadReal</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadReal</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadReal</string>
+                <int name="transition" >3</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yFinishMultiLineComment</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yFinishMultiLineComment</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yFinishMultiLineComment</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadMantissaFirst</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadMantissaFirst</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadIndent</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5344</int>
+                        <int name="y" >5077</int>
+                    </QPoint>
+                    <QPoint>
+                        <int name="x" >5317</int>
+                        <int name="y" >5141</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadIndent</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadIndent</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5128</int>
+                        <int name="y" >5159</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yMinus</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yMinus</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yMinus</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadMultiLineComment</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadMultiLineComment</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5643</int>
+                        <int name="y" >5797</int>
+                    </QPoint>
+                    <QPoint>
+                        <int name="x" >5592</int>
+                        <int name="y" >5919</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadMultiLineComment</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadRightShift</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadRightShift</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadMantissaSign</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadMantissaSign</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadMantissaSign</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadLeftShift</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadLeftShift</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yStroke</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yStroke</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yStroke</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadChar</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadChar</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5333</int>
+                        <int name="y" >5173</int>
+                    </QPoint>
+                    <QPoint>
+                        <int name="x" >5308</int>
+                        <int name="y" >5232</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadChar</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yUnknown</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yUnknown</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yUnknown</string>
+                <int name="transition" >2</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5078</int>
+                        <int name="y" >5041</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yUnknown</string>
+                <int name="transition" >3</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5114</int>
+                        <int name="y" >5121</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yUnknown</string>
+                <int name="transition" >4</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yUnknown</string>
+                <int name="transition" >5</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yUnknown</string>
+                <int name="transition" >6</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yUnknown</string>
+                <int name="transition" >7</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yUnknown</string>
+                <int name="transition" >8</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >4969</int>
+                        <int name="y" >5300</int>
+                    </QPoint>
+                    <QPoint>
+                        <int name="x" >4971</int>
+                        <int name="y" >5239</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yUnknown</string>
+                <int name="transition" >9</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yUnknown</string>
+                <int name="transition" >10</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yUnknown</string>
+                <int name="transition" >11</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yUnknown</string>
+                <int name="transition" >12</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yUnknown</string>
+                <int name="transition" >13</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yUnknown</string>
+                <int name="transition" >14</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yUnknown</string>
+                <int name="transition" >15</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5035</int>
+                        <int name="y" >5905</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yUnknown</string>
+                <int name="transition" >16</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadMacro</string>
+                <int name="transition" >0</int>
+                <qvaluelist name="points" >
+                    <QPoint>
+                        <int name="x" >5345</int>
+                        <int name="y" >5685</int>
+                    </QPoint>
+                    <QPoint>
+                        <int name="x" >5318</int>
+                        <int name="y" >5750</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class name="GTransitionSaver" >
+            <meta name="GSaver" >
+                <data name="GSaver" />
+            </meta>
+            <data name="GTransitionSaver" >
+                <string name="stateName" >yReadMacro</string>
+                <int name="transition" >1</int>
+                <qvaluelist name="points" />
+            </data>
+        </class>
+    </graphics>
+</FSM>

@@ -1,0 +1,385 @@
+<!DOCTYPE FSM>
+<FSM>
+    <statemachine>
+        <name>ManipFSM</name>
+        <comment></comment>
+        <initialstate>Idle</initialstate>
+        <event>
+            <name>MouseMoved</name>
+            <comment></comment>
+        </event>
+        <event>
+            <name>MousePressed</name>
+            <comment></comment>
+        </event>
+        <event>
+            <name>MouseReleased</name>
+            <comment></comment>
+        </event>
+        <input>
+            <name>isNearLine</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isNearPoint</name>
+            <comment></comment>
+        </input>
+        <input>
+            <name>isDragPosReached</name>
+            <comment></comment>
+        </input>
+        <output>
+            <name>movePoint</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>optimize</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>calculatePointIndex</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>addPoint</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>calculateLineIndex</name>
+            <comment></comment>
+        </output>
+        <state>
+            <name>MovePoint</name>
+            <comment></comment>
+            <incomeactions/>
+            <outcomeactions/>
+            <transitions>
+                <transition type="simple">
+                    <name>move point</name>
+                    <comment></comment>
+                    <condition>MouseMoved</condition>
+                    <destination></destination>
+                    <transite_destination></transite_destination>
+                    <transitionactions>
+                        <action type="output">movePoint</action>
+                    </transitionactions>
+                </transition>
+                <transition type="simple">
+                    <name>release</name>
+                    <comment></comment>
+                    <condition>MouseReleased</condition>
+                    <destination>Idle</destination>
+                    <transite_destination></transite_destination>
+                    <transitionactions>
+                        <action type="output">optimize</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>Idle</name>
+            <comment></comment>
+            <incomeactions/>
+            <outcomeactions/>
+            <transitions>
+                <transition type="simple">
+                    <name>point selected</name>
+                    <comment></comment>
+                    <condition>MousePressed &amp;&amp; isNearPoint</condition>
+                    <destination>PointSelected</destination>
+                    <transite_destination></transite_destination>
+                    <transitionactions/>
+                </transition>
+                <transition type="simple">
+                    <name>line selected</name>
+                    <comment></comment>
+                    <condition>MousePressed &amp;&amp; isNearLine</condition>
+                    <destination>LineSelected</destination>
+                    <transite_destination></transite_destination>
+                    <transitionactions/>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>PointSelected</name>
+            <comment></comment>
+            <incomeactions>
+                <action type="output">calculatePointIndex</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition type="simple">
+                    <name>release</name>
+                    <comment></comment>
+                    <condition>MouseReleased</condition>
+                    <destination>Idle</destination>
+                    <transite_destination></transite_destination>
+                    <transitionactions/>
+                </transition>
+                <transition type="simple">
+                    <name>stay</name>
+                    <comment></comment>
+                    <condition>MouseMoved &amp;&amp; !isDragPosReached</condition>
+                    <destination></destination>
+                    <transite_destination></transite_destination>
+                    <transitionactions/>
+                </transition>
+                <transition type="simple">
+                    <name>move</name>
+                    <comment></comment>
+                    <condition>MouseMoved &amp;&amp; isDragPosReached</condition>
+                    <destination>MovePoint</destination>
+                    <transite_destination></transite_destination>
+                    <transitionactions/>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>LineSelected</name>
+            <comment></comment>
+            <incomeactions>
+                <action type="output">calculateLineIndex</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition type="simple">
+                    <name>nothing to do</name>
+                    <comment></comment>
+                    <condition>MouseReleased</condition>
+                    <destination>Idle</destination>
+                    <transite_destination></transite_destination>
+                    <transitionactions/>
+                </transition>
+                <transition type="simple">
+                    <name>stay</name>
+                    <comment></comment>
+                    <condition>MouseMoved &amp;&amp; !isDragPosReached</condition>
+                    <destination></destination>
+                    <transite_destination></transite_destination>
+                    <transitionactions/>
+                </transition>
+                <transition type="simple">
+                    <name>add point</name>
+                    <comment></comment>
+                    <condition>MouseMoved &amp;&amp; isDragPosReached</condition>
+                    <destination>MovePoint</destination>
+                    <transite_destination></transite_destination>
+                    <transitionactions>
+                        <action type="output">addPoint</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+    </statemachine>
+    <graphics>
+        <class classname="GStateSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GStateSaver">
+                <qstring name="stateName">Idle</qstring>
+                <QPoint name="position">
+                    <int>5107</int>
+                    <int>5164</int>
+                </QPoint>
+            </data>
+        </class>
+        <class classname="GStateSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GStateSaver">
+                <qstring name="stateName">MovePoint</qstring>
+                <QPoint name="position">
+                    <int>5396</int>
+                    <int>5171</int>
+                </QPoint>
+            </data>
+        </class>
+        <class classname="GStateSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GStateSaver">
+                <qstring name="stateName">PointSelected</qstring>
+                <QPoint name="position">
+                    <int>5223</int>
+                    <int>5057</int>
+                </QPoint>
+            </data>
+        </class>
+        <class classname="GStateSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GStateSaver">
+                <qstring name="stateName">LineSelected</qstring>
+                <QPoint name="position">
+                    <int>5225</int>
+                    <int>5268</int>
+                </QPoint>
+            </data>
+        </class>
+        <class classname="GTransitionSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GTransitionSaver">
+                <qstring name="stateName">MovePoint</qstring>
+                <int name="transition">0</int>
+                <qvaluelist name="points">
+                    <QPoint>
+                        <int>5509</int>
+                        <int>5183</int>
+                    </QPoint>
+                    <QPoint>
+                        <int>5486</int>
+                        <int>5236</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class classname="GTransitionSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GTransitionSaver">
+                <qstring name="stateName">MovePoint</qstring>
+                <int name="transition">1</int>
+                <qvaluelist name="points"/>
+            </data>
+        </class>
+        <class classname="GTransitionSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GTransitionSaver">
+                <qstring name="stateName">Idle</qstring>
+                <int name="transition">0</int>
+                <qvaluelist name="points">
+                    <QPoint>
+                        <int>5223</int>
+                        <int>5141</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class classname="GTransitionSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GTransitionSaver">
+                <qstring name="stateName">Idle</qstring>
+                <int name="transition">1</int>
+                <qvaluelist name="points">
+                    <QPoint>
+                        <int>5211</int>
+                        <int>5211</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class classname="GTransitionSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GTransitionSaver">
+                <qstring name="stateName">PointSelected</qstring>
+                <int name="transition">0</int>
+                <qvaluelist name="points">
+                    <QPoint>
+                        <int>5151</int>
+                        <int>5079</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class classname="GTransitionSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GTransitionSaver">
+                <qstring name="stateName">PointSelected</qstring>
+                <int name="transition">1</int>
+                <qvaluelist name="points">
+                    <QPoint>
+                        <int>5355</int>
+                        <int>5039</int>
+                    </QPoint>
+                    <QPoint>
+                        <int>5305</int>
+                        <int>4994</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class classname="GTransitionSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GTransitionSaver">
+                <qstring name="stateName">PointSelected</qstring>
+                <int name="transition">2</int>
+                <qvaluelist name="points">
+                    <QPoint>
+                        <int>5398</int>
+                        <int>5093</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class classname="GTransitionSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GTransitionSaver">
+                <qstring name="stateName">LineSelected</qstring>
+                <int name="transition">0</int>
+                <qvaluelist name="points">
+                    <QPoint>
+                        <int>5151</int>
+                        <int>5262</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class classname="GTransitionSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GTransitionSaver">
+                <qstring name="stateName">LineSelected</qstring>
+                <int name="transition">1</int>
+                <qvaluelist name="points">
+                    <QPoint>
+                        <int>5262</int>
+                        <int>5367</int>
+                    </QPoint>
+                    <QPoint>
+                        <int>5335</int>
+                        <int>5345</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class classname="GTransitionSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GTransitionSaver">
+                <qstring name="stateName">LineSelected</qstring>
+                <int name="transition">2</int>
+                <qvaluelist name="points">
+                    <QPoint>
+                        <int>5356</int>
+                        <int>5268</int>
+                    </QPoint>
+                    <QPoint>
+                        <int>5387</int>
+                        <int>5253</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+    </graphics>
+</FSM>
