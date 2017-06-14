@@ -200,8 +200,8 @@
     <property name="title">
      <string>&amp;View</string>
     </property>
-    <addaction name="action_Fit_Scale"/>
-    <addaction name="action_Original_Scale"/>
+    <addaction name="actionFitScale"/>
+    <addaction name="actionDefaultScale"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
@@ -235,8 +235,9 @@
    <addaction name="actionUndo"/>
    <addaction name="actionRedo"/>
    <addaction name="separator"/>
-   <addaction name="action_Fit_Scale"/>
-   <addaction name="action_Original_Scale"/>
+   <addaction name="actionFitScale"/>
+   <addaction name="actionDefaultScale"/>
+   <addaction name="separator"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="enabled">
@@ -293,7 +294,7 @@
     <string>Ctrl+P</string>
    </property>
   </action>
-  <action name="action_Fit_Scale">
+  <action name="actionFitScale">
    <property name="icon">
     <iconset resource="ui.qrc">
      <normaloff>:/images/scale-fit.png</normaloff>:/images/scale-fit.png</iconset>
@@ -305,7 +306,7 @@
     <string>Fit</string>
    </property>
   </action>
-  <action name="action_Original_Scale">
+  <action name="actionDefaultScale">
    <property name="icon">
     <iconset resource="ui.qrc">
      <normaloff>:/images/scale-original.png</normaloff>:/images/scale-original.png</iconset>

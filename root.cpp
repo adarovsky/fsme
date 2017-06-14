@@ -62,6 +62,14 @@ QString Root::initialState() const
 
 void Root::setInitialState(const QString &initialState)
 {
+    auto oldInitial = parent()->findState( parent()->initialState );
+    auto newInitial = parent()->findState( initialState );
+
     parent()->initialState = initialState;
     parent()->informItemChanged(this, StateMachine::ContentChangedRole);
+
+    if (oldInitial)
+        parent()->informItemChanged( oldInitial.data(), StateMachine::ContentChangedRole);
+    if (newInitial)
+        parent()->informItemChanged( newInitial.data(), StateMachine::ContentChangedRole);
 }

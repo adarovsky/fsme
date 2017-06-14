@@ -66,6 +66,10 @@ RootChangeInitialStateCommand::RootChangeInitialStateCommand(Root * e, const QSt
 {
 }
 
+RootChangeInitialStateCommand::~RootChangeInitialStateCommand()
+{
+}
+
 void RootChangeInitialStateCommand::undo()
 {
     RootUndoCommand::undo();

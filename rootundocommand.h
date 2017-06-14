@@ -38,6 +38,7 @@ class RootChangeInitialStateCommand : public RootUndoCommand {
     QString m_newInitialState;
 public:
     RootChangeInitialStateCommand(Root * e, const QString& newName, QUndoCommand * parent = nullptr);
+    ~RootChangeInitialStateCommand();
 
     virtual void undo() override;
     virtual void redo() override;

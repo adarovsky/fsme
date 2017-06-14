@@ -41,10 +41,6 @@ public slots:
     void addNewTransition();
     void deleteItems();
 
-    virtual void updateScale(int);
-    virtual void fitScale();
-    virtual void defaultScale();
-
     virtual void fileOpen( QString file );
 
     void commitDataRequest(QSessionManager & manager);

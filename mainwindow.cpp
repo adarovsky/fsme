@@ -15,6 +15,7 @@
 #include "statemachine.h"
 #include "diagramscene.h"
 #include "scopeguard.h"
+#include <algorithm>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -25,7 +26,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui->setupUi(this);
     statusBar()->hide();
 
-    QAction * separator = m_ui->toolBar->insertSeparator(m_ui->action_Fit_Scale);
     QAction * undo = m_undoGroup->createUndoAction(this);
     undo->setIcon(QIcon(":/images/undo.png"));
     undo->setShortcut(QKeySequence::Undo);
@@ -46,24 +46,32 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui->menu_Edit->addAction(undo);
     m_ui->menu_Edit->addAction(redo);
 
-    scaleFactor = new QSpinBox();
-    scaleFactor->setMinimum(10);
-    scaleFactor->setMaximum(1000);
-    scaleFactor->setValue(100);
-    scaleFactor->setSuffix(tr(" %"));
-    m_ui->toolBar->addWidget(scaleFactor);
+//    scaleFactor = new QSpinBox();
+//    scaleFactor->setMinimum(10);
+//    scaleFactor->setMaximum(1000);
+//    scaleFactor->setValue(100);
+//    scaleFactor->setSuffix(tr(" %"));
+//    m_ui->toolBar->addWidget(scaleFactor);
+
+//    m_ui->diagramView->setAlignment( 0 );
 
     m_ui->diagramView->setScene(m_scene);
+    m_ui->diagramView->setSceneRect(0, 0, 1, 1);
 
     QSettings s;
 
     startFilePos = s.value("/daa/fsme/recent dir" ).toString();
 
     connect(m_ui->actionAdd, SIGNAL(triggered()), SLOT(addNew()));
-    connect(m_ui->action_Fit_Scale, SIGNAL(triggered()), SLOT(fitScale()));
-    connect(m_ui->action_Original_Scale, SIGNAL(triggered()), SLOT(defaultScale()));
+    connect(m_ui->actionFitScale, &QAction::triggered, m_ui->diagramView, [=]() {
+        m_ui->diagramView->fitInView(m_ui->diagramView->scene()->itemsBoundingRect(), Qt::KeepAspectRatio);
+    });
+    connect(m_ui->actionDefaultScale, &QAction::triggered, m_ui->diagramView, [=]() {
+        m_ui->diagramView->setTransform( QTransform::fromScale( 1, 1 ) );
+    });
+
 //    connect(m_ui->diagram, SIGNAL(scaleChanged(double)), SLOT(diagramScaleChanged(double)));
-    connect(scaleFactor, SIGNAL(valueChanged(int)), SLOT(updateScale(int)));
+//    connect(scaleFactor, SIGNAL(valueChanged(int)), SLOT(updateScale(int)));
 
     connect (m_ui->action_New, SIGNAL(triggered()), SLOT(fileNew()));
     connect (m_ui->action_Open, SIGNAL(triggered()), SLOT(fileOpen()));
@@ -76,8 +84,14 @@ MainWindow::MainWindow(QWidget *parent) :
 //    connect (m_ui->action_Print, SIGNAL(triggered()), m_ui->diagram, SLOT(print()));
     connect(m_ui->recentFiles, SIGNAL(triggered(QAction*)), SLOT(openRecent(QAction *)));
 
-
     connect(m_scene, SIGNAL(requestEditingItem(QModelIndex)), SLOT(edit(QModelIndex)));
+    connect(m_scene, &QGraphicsScene::sceneRectChanged, this, [=](const QRectF&) {
+        auto items = m_scene->itemsBoundingRect();
+        auto prev = m_ui->diagramView->sceneRect();
+        m_ui->diagramView->setSceneRect( items.adjusted(-items.width(), -items.height(), items.width(), items.height()) );
+        auto offset = QPointF((items.width() - prev.width()) / 2, (items.height() - prev.height()) / 2);
+        m_ui->diagramView->translate( offset.x(), offset.y() );
+    });
 
     QByteArray geometry = s.value("/daa/fsme/tree slider").toByteArray();
     if (!geometry.isEmpty())
@@ -143,6 +157,7 @@ void MainWindow::fileNew()
     m_ui->editorStack->setStateMachine( m_stateMachine );
     m_scene->setItemSelectionModel( m_ui->treeView->selectionModel() );
     connect( m_ui->treeView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(ensureTreeIndexesVisible(QItemSelection,QItemSelection)) );
+    m_ui->diagramView->centerOn(QPointF(0, 0));
     m_ui->actionDelete->setEnabled( false );
     emit fileNameChanged(fileName);
 }
@@ -199,6 +214,7 @@ void MainWindow::fileOpen( QString file )
     m_scene->setItemSelectionModel( m_ui->treeView->selectionModel() );
     m_ui->actionDelete->setEnabled( false );
     connect( m_ui->treeView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(ensureTreeIndexesVisible(QItemSelection,QItemSelection)) );
+    m_ui->diagramView->centerOn(m_scene->itemsBoundingRect().center());
 }
 
 
@@ -349,21 +365,6 @@ void MainWindow::fileNameChanged(const QString& newName)
         setWindowTitle(tr( "State Machine Editor - untitled"));
         setWindowFilePath(QString::null);
     }
-}
-
-void MainWindow::updateScale(int s )
-{
-//    m_ui->diagram->scaleContents( s / 100.0 );
-}
-
-void MainWindow::fitScale()
-{
-//    m_ui->diagram->fitScale();
-}
-
-void MainWindow::defaultScale()
-{
-//    m_ui->diagram->scaleContents( 1 );
 }
 
 void MainWindow::diagramScaleChanged( double s )

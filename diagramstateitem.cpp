@@ -57,24 +57,26 @@ DiagramStateItem::~DiagramStateItem()
 
 void DiagramStateItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    QPen currentPen;
-    QBrush currentBrush;
-    if ( isSelected() ) {
-        currentPen = QPen( QBrush(QColor(Qt::blue)), 3 );
-        currentBrush = brush();
-    }
-    else {
-        currentPen = pen();
-        currentBrush = brush();
-    }
-
-    painter->setBrush( currentBrush );
-    painter->fillRect( rect(), currentBrush );
-    painter->setPen( currentPen );
-    painter->drawRect( rect() );
-
     QSharedPointer<State> state(m_state);
     if (state) {
+        QPen currentPen;
+        QBrush currentBrush;
+        if ( isSelected() ) {
+            currentPen = QPen( QBrush(QColor(Qt::blue)), 3 );
+            currentBrush = brush();
+        }
+        else {
+            currentPen = pen();
+            if (state->parent()->initialState == state->name())
+                currentPen.setWidth(2);
+            currentBrush = brush();
+        }
+
+        painter->setBrush( currentBrush );
+        painter->fillRect( rect(), currentBrush );
+        painter->setPen( currentPen );
+        painter->drawRect( rect() );
+
         painter->setPen( pen() );
         painter->setFont( QFont("helvetica", 14, QFont::Medium) );
         QPointF topLeft = rect().topLeft();
@@ -108,6 +110,7 @@ void DiagramStateItem::modelPositionChanged()
 //        qCDebug(DiagramStateItemLogging) << "changed pos to " << value << ", current bounds:" << sceneBoundingRect();
     auto s = state();
 
+    update();
     if ( s ) {
         QString name = s->name();
         QFontMetricsF metrics(QFont("helvetica", 14, QFont::Medium));

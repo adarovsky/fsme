@@ -20,8 +20,11 @@ EditorRoot::EditorRoot(QWidget *parent)
     });
     connect(ui->initialStateCombo, &QComboBox::currentTextChanged, [=] (const QString& text) {
         SCOPE_GUARD(m_editing);
-        auto cmd = new RootChangeInitialStateCommand( object(), text );
-        object()->parent()->undoStack()->push( cmd );
+        QString old = object()->initialState();
+        if (old != text) {
+            auto cmd = new RootChangeInitialStateCommand( object(), text );
+            object()->parent()->undoStack()->push( cmd );
+        }
     });
 }
 
