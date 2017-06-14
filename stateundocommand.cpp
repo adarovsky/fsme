@@ -1,5 +1,6 @@
 #include "stateundocommand.h"
 #include "transitionundocommand.h"
+#include "rootundocommand.h"
 
 StateUndoCommand::StateUndoCommand(State * s, const QString& text, QUndoCommand * parent)
     : QUndoCommand( text, parent ), m_stateName( s->name() ), m_document( s->parent() )
@@ -20,6 +21,9 @@ QSharedPointer<State> StateUndoCommand::state() const
 StateAddCommand::StateAddCommand(const QString &stateName, const QPointF &pos, QSharedPointer<StateMachine> document, QUndoCommand *parent)
     : QUndoCommand(QObject::tr("Add State %1\nadd state").arg(stateName), parent), m_stateName(stateName), m_pos( pos ), m_document( document )
 {
+    auto fsm = m_document.toStrongRef();
+    if (fsm && fsm->rowCount(fsm->statesFolder()) == 0)
+        new RootChangeInitialStateCommand(fsm->root().data(), stateName, this);
 }
 
 void StateAddCommand::undo()

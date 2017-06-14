@@ -2,3 +2,5 @@
 .hgignore
 *.stash
 qwe.fsm
+
+*.user
