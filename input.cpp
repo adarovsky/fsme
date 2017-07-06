@@ -55,3 +55,27 @@ InputDeleteCommand::InputDeleteCommand(Input * obj, QUndoCommand * parent)
 {
     new InputChangeCommentCommand(obj, QString(), this);
 }
+
+void RenameInputCommand::undo()
+{
+    QSharedPointer<StateMachine> fsm( m_document );
+    if (fsm) {
+        QSharedPointer<Input> obj = fsm->findInput( m_newName );
+        if ( obj )
+            obj->rename( m_oldName );
+
+        EIOBase::renameInCondition(fsm, m_newName, m_oldName );
+    }
+}
+
+void RenameInputCommand::redo()
+{
+    QSharedPointer<StateMachine> fsm( m_document );
+    if (fsm) {
+        QSharedPointer<Input> obj = fsm->findInput( m_oldName );
+        if ( obj )
+            obj->rename( m_newName );
+
+        EIOBase::renameInCondition(fsm, m_oldName, m_newName );
+    }
+}

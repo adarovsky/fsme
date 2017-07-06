@@ -125,7 +125,7 @@ QDomNode State::save( QDomDocument doc )
         auto b = i->toStrongRef();
         if (!b) continue; // skip empty
         QDomElement eAction = doc.createElement( "action" );
-        eAction.setAttribute( "type", b.dynamicCast<Output>() ? "output" : "event" );
+        eAction.setAttribute( "type", b.dynamicCast<State>() ? "state" : "event" );
         QDomText actionText = doc.createTextNode( b->name() );
         eIncome.appendChild( eAction );
         eAction.appendChild( actionText );
@@ -137,7 +137,7 @@ QDomNode State::save( QDomDocument doc )
         auto b = i->toStrongRef();
         if (!b) continue; // skip empty
         QDomElement eAction = doc.createElement( "action" );
-        eAction.setAttribute( "type", b.dynamicCast<Output>() ? "output" : "event" );
+        eAction.setAttribute( "type", b.dynamicCast<State>() ? "state" : "event" );
         QDomText actionText = doc.createTextNode( b->name() );
         eOutcome.appendChild( eAction );
         eAction.appendChild( actionText );
@@ -159,3 +159,24 @@ void State::setCenter( const QPointF &c )
     m_center = c;
     parent()->informItemChanged( this, StateMachine::GraphicPositionRole );
 }
+
+void RenameStateCommand::undo()
+{
+    QSharedPointer<StateMachine> fsm( m_document );
+    if (fsm) {
+        QSharedPointer<State> obj = fsm->findState( m_newName );
+        if ( obj )
+            obj->rename( m_oldName );
+    }
+}
+
+void RenameStateCommand::redo()
+{
+    QSharedPointer<StateMachine> fsm( m_document );
+    if (fsm) {
+        QSharedPointer<State> obj = fsm->findState( m_oldName );
+        if ( obj )
+            obj->rename( m_newName );
+    }
+}
+

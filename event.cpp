@@ -56,3 +56,27 @@ EventDeleteCommand::EventDeleteCommand(Event * obj, QUndoCommand * parent)
 {
     new EventChangeCommentCommand(obj, QString(), this);
 }
+
+void RenameEventCommand::undo()
+{
+    QSharedPointer<StateMachine> fsm( m_document );
+    if (fsm) {
+        QSharedPointer<Event> obj = fsm->findEvent( m_newName );
+        if ( obj )
+            obj->rename( m_oldName );
+
+        EIOBase::renameInCondition(fsm, m_newName, m_oldName );
+    }
+}
+
+void RenameEventCommand::redo()
+{
+    QSharedPointer<StateMachine> fsm( m_document );
+    if (fsm) {
+        QSharedPointer<Event> obj = fsm->findEvent( m_oldName );
+        if ( obj )
+            obj->rename( m_newName );
+
+        EIOBase::renameInCondition(fsm, m_oldName, m_newName );
+    }
+}

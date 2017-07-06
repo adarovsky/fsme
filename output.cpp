@@ -84,3 +84,24 @@ OutputDeleteCommand::OutputDeleteCommand(Output * obj, QUndoCommand * parent)
         }
     }
 }
+
+void RenameOutputCommand::undo()
+{
+    QSharedPointer<StateMachine> fsm( m_document );
+    if (fsm) {
+        QSharedPointer<Output> obj = fsm->findOutput( m_newName );
+        if ( obj )
+            obj->rename( m_oldName );
+    }
+}
+
+void RenameOutputCommand::redo()
+{
+    QSharedPointer<StateMachine> fsm( m_document );
+    if (fsm) {
+        QSharedPointer<Output> obj = fsm->findOutput( m_oldName );
+        if ( obj )
+            obj->rename( m_newName );
+    }
+}
+

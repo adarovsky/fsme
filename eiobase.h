@@ -50,6 +50,8 @@ public:
 public:
     virtual QUndoCommand * renameCommand( const QString& newName ) = 0;
     virtual QUndoCommand * deleteCommand() = 0;
+
+    static void renameInCondition(QSharedPointer<StateMachine> fsm, const QString& what, const QString& to);
 };
 
 
@@ -70,24 +72,6 @@ Rename##ClassName##Command::Rename##ClassName##Command(ClassName *e, const QStri
     : QUndoCommand(QObject::tr("Rename %1 %2 to %3\nrename").arg(QObject::tr(#ObjectName), e->name(), newName), parent),\
       m_oldName(e->name()), m_newName(newName), m_document(e->parent())                             \
 {                                                                                                   \
-}                                                                                                   \
-void Rename##ClassName##Command::undo()                                                             \
-{                                                                                                   \
-    QSharedPointer<StateMachine> fsm( m_document );                                                 \
-    if (fsm) {                                                                                      \
-        QSharedPointer<ClassName> obj = fsm->find##ClassName( m_newName );                          \
-        if ( obj )                                                                                  \
-            obj->rename( m_oldName );                                                               \
-    }                                                                                               \
-}                                                                                                   \
-void Rename##ClassName##Command::redo()                                                             \
-{                                                                                                   \
-    QSharedPointer<StateMachine> fsm( m_document );                                                 \
-    if (fsm) {                                                                                      \
-        QSharedPointer<ClassName> obj = fsm->find##ClassName( m_oldName );                          \
-        if ( obj )                                                                                  \
-            obj->rename( m_newName );                                                               \
-    }                                                                                               \
 }                                                                                                   \
 bool Rename##ClassName##Command::mergeWith(const QUndoCommand * command)                            \
 {                                                                                                   \
