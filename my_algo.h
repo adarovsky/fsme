@@ -20,6 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <functional>
 #include <numeric>
 #include <cmath>
+#include <QPointF>
+#include <QRectF>
 
 #ifndef __MY__ALGO__
 #define __MY__ALGO__
@@ -92,6 +94,22 @@ inline double dist( QPointF p1, QPointF p2, QPointF p )
 inline bool is_close( QPointF p1, QPointF p2, QPointF p, double width = 3 )
 {
     return dist( p1, p2, p ) <= width;
+}
+
+inline QVector<QPointF> make_loop(const QRectF& bounds)
+{
+    double angle = 0;
+    QPointF pos = bounds.center();
+    int radius = qMax(bounds.width(), bounds.height());
+    QVector<QPointF> cp(2);
+    cp[0].setX( int(pos.x() + radius * cos(angle)) );
+    cp[0].setY( int(pos.y() + radius * sin(angle)) );
+    angle += M_PI / 4;
+    cp[1].setX( int(pos.x() + radius * cos(angle)) );
+    cp[1].setY( int(pos.y() + radius * sin(angle)) );
+    angle += M_PI / 4;
+
+    return cp;
 }
 
 #endif

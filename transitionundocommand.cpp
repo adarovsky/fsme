@@ -1,7 +1,9 @@
+#include <QFontMetricsF>
 #include "output.h"
 #include "state.h"
 #include "transition.h"
 #include "statemachine.h"
+#include "my_algo.h"
 #include "transitionundocommand.h"
 
 TransitionUndoCommand::TransitionUndoCommand(Transition * e, const QString& text, QUndoCommand * parent)
@@ -34,6 +36,14 @@ TransitionAddCommand::TransitionAddCommand(QSharedPointer<State> source, QShared
     : QUndoCommand(QObject::tr("Create transition"), parent), m_document( source->parent() ),
       m_stateName( source->name() ), m_destName( dest->name() ), m_pos( 0 )
 {
+    // add a loop
+    if (source == dest) {
+        QString name = m_stateName;
+        QFontMetricsF metrics(QFont("helvetica", 14, QFont::Medium));
+        QRectF bounds = metrics.boundingRect(name).normalized().marginsAdded(QMarginsF(10, 10, 10, 10)).toAlignedRect();
+        bounds.moveCenter( source->center() );
+        m_initialCP = make_loop(bounds);
+    }
 }
 
 bool TransitionAddCommand::mergeWith(const QUndoCommand *command)
@@ -65,6 +75,7 @@ void TransitionAddCommand::redo()
         QSharedPointer<State> dest = fsm->findState( m_destName );
         m_pos = state->transitionList().count();
         auto t = state->createTransition( m_pos, dest );
+        t->setControlPoints(m_initialCP);
         if ( !m_newName.isEmpty() )
             t->rename( m_newName );
     }

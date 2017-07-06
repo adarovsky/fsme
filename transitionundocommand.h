@@ -26,6 +26,7 @@ class TransitionAddCommand : public QUndoCommand {
     QString                    m_stateName;
     QString                    m_destName;
     QString                    m_newName;
+    QVector<QPointF>           m_initialCP;
     int                        m_pos;
 public:
     TransitionAddCommand(QSharedPointer<State> source, QSharedPointer<State> dest, QUndoCommand * parent = nullptr);
