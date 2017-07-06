@@ -617,14 +617,15 @@ void MainWindow::showChoicePopup()
     menu->addAction( tr("Add &State", "Add|State"), this, SLOT(addNewState()), QKeySequence(tr("S", "Add|State")) );
     menu->addAction( tr("Add &Transition", "Add|Transition"), this, SLOT(addNewTransition()), QKeySequence(tr("T", "Add|Transition")) );
 
-    menu->exec( m_ui->toolBar->mapToGlobal( QPoint(32, 32)));
+    menu->exec( QCursor::pos() );
 }
 
 void MainWindow::showStateChoicePopup()
 {
     QMenu * menu = new QMenu( this );
-    menu->addAction( tr("Add &State", "Add|State"), this, SLOT(addNewState()), QKeySequence(tr("Ctrl+S", "Add|State")) );
-    menu->addAction( tr("Add &Transition", "Add|Transition"), this, SLOT(addNewTransition()), QKeySequence(tr("Ctrl+T", "Add|Transition")) );
+    menu->addAction( tr("Add &State", "Add|State"), this, SLOT(addNewState()), QKeySequence(tr("S", "Add|State")) );
+    auto a = menu->addAction( tr("Add &Transition", "Add|Transition"), this, SLOT(addNewTransition()), QKeySequence(tr("T", "Add|Transition")) );
+    QRect bounds = menu->actionGeometry(a);
 
-    menu->exec( m_ui->toolBar->mapToGlobal( QPoint(32, 32)));
+    menu->exec( QCursor::pos() - QPoint(32, bounds.height() / 2), a );
 }
