@@ -154,7 +154,17 @@ TransitionChangeDestinationCommand::TransitionChangeDestinationCommand(Transitio
     if (t)
         m_oldDestination = t->name();
 
-    new TransitionTransformCommand(e, QVector<QPointF>(), this);
+    QVector<QPointF> m_initialCP;
+    // make a loop
+    if (newDestination.isEmpty() || newDestination == e->parentState()->name()) {
+        QString name = e->parentState()->name();
+        QFontMetricsF metrics(QFont("helvetica", 14, QFont::Medium));
+        QRectF bounds = metrics.boundingRect(name).normalized().marginsAdded(QMarginsF(10, 10, 10, 10)).toAlignedRect();
+        bounds.moveCenter( state()->center() );
+        m_initialCP = make_loop(bounds);
+    }
+
+    new TransitionTransformCommand(e, m_initialCP, this);
 }
 
 void TransitionChangeDestinationCommand::undo()

@@ -63,8 +63,8 @@ public:
 };
 
 class TransitionChangeDestinationCommand : public TransitionUndoCommand {
-    QString m_newDestination;
-    QString m_oldDestination;
+    QString          m_newDestination;
+    QString          m_oldDestination;
 public:
     TransitionChangeDestinationCommand(Transition * e, const QString& newDestination, QUndoCommand * parent = nullptr);
     virtual void undo() override;
