@@ -58,6 +58,7 @@ protected slots:
 
 private:
     void showChoicePopup();
+    void showStateChoicePopup();
 
     Ui::MainWindow *m_ui;
 

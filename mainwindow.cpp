@@ -562,7 +562,7 @@ void MainWindow::addNew()
         return;
     }
     else if ( dynamic_cast<State*>( p ) ) {
-        addNewTransition();
+        showStateChoicePopup();
         return;
     }
     else if ( dynamic_cast<Transition*>( p ) ) {
@@ -611,9 +611,18 @@ void MainWindow::addNewTransition()
 void MainWindow::showChoicePopup()
 {
     QMenu * menu = new QMenu( this );
-    menu->addAction( tr("Add &Event", "Add|Event"), this, SLOT(addNewEvent()), QKeySequence(tr("Ctrl+E", "Add|Event")) );
-    menu->addAction( tr("Add &Input", "Add|Input"), this, SLOT(addNewInput()), QKeySequence(tr("Ctrl+I", "Add|Input")) );
-    menu->addAction( tr("Add &Output", "Add|Output"), this, SLOT(addNewInput()), QKeySequence(tr("Ctrl+O", "Add|Output")) );
+    menu->addAction( tr("Add &Event", "Add|Event"), this, SLOT(addNewEvent()), QKeySequence(tr("E", "Add|Event")) );
+    menu->addAction( tr("Add &Input", "Add|Input"), this, SLOT(addNewInput()), QKeySequence(tr("I", "Add|Input")) );
+    menu->addAction( tr("Add &Output", "Add|Output"), this, SLOT(addNewInput()), QKeySequence(tr("O", "Add|Output")) );
+    menu->addAction( tr("Add &State", "Add|State"), this, SLOT(addNewState()), QKeySequence(tr("S", "Add|State")) );
+    menu->addAction( tr("Add &Transition", "Add|Transition"), this, SLOT(addNewTransition()), QKeySequence(tr("T", "Add|Transition")) );
+
+    menu->exec( m_ui->toolBar->mapToGlobal( QPoint(32, 32)));
+}
+
+void MainWindow::showStateChoicePopup()
+{
+    QMenu * menu = new QMenu( this );
     menu->addAction( tr("Add &State", "Add|State"), this, SLOT(addNewState()), QKeySequence(tr("Ctrl+S", "Add|State")) );
     menu->addAction( tr("Add &Transition", "Add|Transition"), this, SLOT(addNewTransition()), QKeySequence(tr("Ctrl+T", "Add|Transition")) );
 
