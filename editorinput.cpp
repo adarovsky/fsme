@@ -8,7 +8,9 @@ EditorInput::EditorInput(QWidget *parent)
 {
     ui->setupUi( this );
     connect(ui->nameField, &QLineEdit::textChanged, [=] ( const QString &newValue ) {
-        input()->parent()->undoStack()->push(input()->renameCommand(newValue));
+        auto cmd = input()->renameCommand(newValue);
+        if (cmd)
+            input()->parent()->undoStack()->push(cmd);
     });
     connect(ui->commentField, &QPlainTextEdit::textChanged, [=] () {
         auto cmd = new InputChangeCommentCommand( input(), ui->commentField->toPlainText() );

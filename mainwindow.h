@@ -48,6 +48,7 @@ public slots:
     void fileNameChanged(const QString& newName);
 
 protected:
+    bool event(QEvent *event);
     void changeEvent(QEvent *e);
     void closeEvent(QCloseEvent *event);
 protected slots:

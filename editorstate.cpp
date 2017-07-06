@@ -14,7 +14,9 @@ EditorState::EditorState(QWidget *parent)
     ui->setupUi( this );
     connect(ui->nameField, &QLineEdit::textChanged, [=] ( const QString &newValue ) {
         SCOPE_GUARD(m_editing);
-        state()->parent()->undoStack()->push(state()->renameCommand(newValue));
+        auto cmd = state()->renameCommand(newValue);
+        if (cmd)
+            state()->parent()->undoStack()->push(cmd);
     });
     connect(ui->commentField, &QPlainTextEdit::textChanged, [=] () {
         SCOPE_GUARD(m_editing);

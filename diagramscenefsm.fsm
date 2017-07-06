@@ -5,15 +5,11 @@
         <comment></comment>
         <initialstate>Normal</initialstate>
         <event>
-            <name>MouseRelease</name>
+            <name>AddState</name>
             <comment></comment>
         </event>
         <event>
-            <name>NameEntered</name>
-            <comment></comment>
-        </event>
-        <event>
-            <name>MouseMove</name>
+            <name>AddTransition</name>
             <comment></comment>
         </event>
         <event>
@@ -21,15 +17,19 @@
             <comment></comment>
         </event>
         <event>
+            <name>MouseMove</name>
+            <comment></comment>
+        </event>
+        <event>
             <name>MousePress</name>
             <comment></comment>
         </event>
         <event>
-            <name>AddState</name>
+            <name>MouseRelease</name>
             <comment></comment>
         </event>
         <event>
-            <name>AddTransition</name>
+            <name>NameEntered</name>
             <comment></comment>
         </event>
         <input>
@@ -41,7 +41,7 @@
             <comment></comment>
         </input>
         <output>
-            <name>updatePreviewArrow</name>
+            <name>acceptEvent</name>
             <comment></comment>
         </output>
         <output>
@@ -49,15 +49,7 @@
             <comment></comment>
         </output>
         <output>
-            <name>selectState</name>
-            <comment></comment>
-        </output>
-        <output>
-            <name>removePreviewArrow</name>
-            <comment></comment>
-        </output>
-        <output>
-            <name>setPointerToCross</name>
+            <name>addState</name>
             <comment></comment>
         </output>
         <output>
@@ -65,7 +57,15 @@
             <comment></comment>
         </output>
         <output>
-            <name>addState</name>
+            <name>removeNameField</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>removePreviewArrow</name>
+            <comment></comment>
+        </output>
+        <output>
+            <name>selectState</name>
             <comment></comment>
         </output>
         <output>
@@ -73,53 +73,17 @@
             <comment></comment>
         </output>
         <output>
+            <name>setPointerToCross</name>
+            <comment></comment>
+        </output>
+        <output>
             <name>showPreviewArrow</name>
             <comment></comment>
         </output>
         <output>
-            <name>acceptEvent</name>
+            <name>updatePreviewArrow</name>
             <comment></comment>
         </output>
-        <output>
-            <name>removeNameField</name>
-            <comment></comment>
-        </output>
-        <state>
-            <name>Normal</name>
-            <comment></comment>
-            <incomeactions>
-                <action type="output">setPointerToArrow</action>
-            </incomeactions>
-            <outcomeactions/>
-            <transitions>
-                <transition type="simple">
-                    <name>add state</name>
-                    <comment></comment>
-                    <condition>AddState</condition>
-                    <destination>AddingState</destination>
-                    <transite_destination></transite_destination>
-                    <transitionactions/>
-                </transition>
-                <transition type="simple">
-                    <name>add transition</name>
-                    <comment></comment>
-                    <condition>AddTransition &amp;&amp; isStartingFromState</condition>
-                    <destination>AddingTransition</destination>
-                    <transite_destination></transite_destination>
-                    <transitionactions>
-                        <action type="output">setPointerToCross</action>
-                    </transitionactions>
-                </transition>
-                <transition type="simple">
-                    <name>choose source state</name>
-                    <comment></comment>
-                    <condition>AddTransition</condition>
-                    <destination>ChooseSource</destination>
-                    <transite_destination></transite_destination>
-                    <transitionactions/>
-                </transition>
-            </transitions>
-        </state>
         <state>
             <name>AddingState</name>
             <comment></comment>
@@ -133,7 +97,7 @@
                     <comment></comment>
                     <condition>MousePress</condition>
                     <destination>EnterStateName</destination>
-                    <transite_destination></transite_destination>
+                    <transite_destination>EnterStateName</transite_destination>
                     <transitionactions/>
                 </transition>
                 <transition type="simple">
@@ -141,35 +105,7 @@
                     <comment></comment>
                     <condition>Cancel</condition>
                     <destination>Normal</destination>
-                    <transite_destination></transite_destination>
-                    <transitionactions/>
-                </transition>
-            </transitions>
-        </state>
-        <state>
-            <name>ChooseSource</name>
-            <comment></comment>
-            <incomeactions>
-                <action type="output">setPointerToCross</action>
-            </incomeactions>
-            <outcomeactions/>
-            <transitions>
-                <transition type="simple">
-                    <name>pointed</name>
-                    <comment></comment>
-                    <condition>MousePress &amp;&amp; isPointingToState</condition>
-                    <destination>AddingTransition</destination>
-                    <transite_destination></transite_destination>
-                    <transitionactions>
-                        <action type="output">selectState</action>
-                    </transitionactions>
-                </transition>
-                <transition type="simple">
-                    <name>miss</name>
-                    <comment></comment>
-                    <condition>MousePress</condition>
-                    <destination>Normal</destination>
-                    <transite_destination></transite_destination>
+                    <transite_destination>Normal</transite_destination>
                     <transitionactions/>
                 </transition>
             </transitions>
@@ -199,7 +135,7 @@
                     <comment></comment>
                     <condition>MousePress &amp;&amp; isPointingToState</condition>
                     <destination>Normal</destination>
-                    <transite_destination></transite_destination>
+                    <transite_destination>Normal</transite_destination>
                     <transitionactions>
                         <action type="output">addTransition</action>
                         <action type="output">acceptEvent</action>
@@ -210,8 +146,56 @@
                     <comment></comment>
                     <condition>MousePress</condition>
                     <destination>Normal</destination>
-                    <transite_destination></transite_destination>
+                    <transite_destination>Normal</transite_destination>
                     <transitionactions/>
+                </transition>
+                <transition type="simple">
+                    <name>cancel</name>
+                    <comment></comment>
+                    <condition>Cancel</condition>
+                    <destination>Normal</destination>
+                    <transite_destination>Normal</transite_destination>
+                    <transitionactions>
+                        <action type="output">acceptEvent</action>
+                    </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>ChooseSource</name>
+            <comment></comment>
+            <incomeactions>
+                <action type="output">setPointerToCross</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition type="simple">
+                    <name>pointed</name>
+                    <comment></comment>
+                    <condition>MousePress &amp;&amp; isPointingToState</condition>
+                    <destination>AddingTransition</destination>
+                    <transite_destination>AddingTransition</transite_destination>
+                    <transitionactions>
+                        <action type="output">selectState</action>
+                    </transitionactions>
+                </transition>
+                <transition type="simple">
+                    <name>miss</name>
+                    <comment></comment>
+                    <condition>MousePress</condition>
+                    <destination>Normal</destination>
+                    <transite_destination>Normal</transite_destination>
+                    <transitionactions/>
+                </transition>
+                <transition type="simple">
+                    <name>cancel</name>
+                    <comment></comment>
+                    <condition>Cancel</condition>
+                    <destination>Normal</destination>
+                    <transite_destination>Normal</transite_destination>
+                    <transitionactions>
+                        <action type="output">acceptEvent</action>
+                    </transitionactions>
                 </transition>
             </transitions>
         </state>
@@ -229,7 +213,7 @@
                     <comment></comment>
                     <condition>NameEntered</condition>
                     <destination>Normal</destination>
-                    <transite_destination></transite_destination>
+                    <transite_destination>Normal</transite_destination>
                     <transitionactions>
                         <action type="output">addState</action>
                         <action type="output">removeNameField</action>
@@ -240,18 +224,58 @@
                     <comment></comment>
                     <condition>Cancel</condition>
                     <destination>Normal</destination>
-                    <transite_destination></transite_destination>
-                    <transitionactions/>
+                    <transite_destination>Normal</transite_destination>
+                    <transitionactions>
+                        <action type="output">acceptEvent</action>
+                        <action type="output">removeNameField</action>
+                    </transitionactions>
                 </transition>
                 <transition type="simple">
                     <name>press</name>
                     <comment></comment>
                     <condition>MousePress</condition>
                     <destination>Normal</destination>
-                    <transite_destination></transite_destination>
+                    <transite_destination>Normal</transite_destination>
                     <transitionactions>
                         <action type="output">acceptEvent</action>
+                        <action type="output">removeNameField</action>
                     </transitionactions>
+                </transition>
+            </transitions>
+        </state>
+        <state>
+            <name>Normal</name>
+            <comment></comment>
+            <incomeactions>
+                <action type="output">setPointerToArrow</action>
+            </incomeactions>
+            <outcomeactions/>
+            <transitions>
+                <transition type="simple">
+                    <name>add state</name>
+                    <comment></comment>
+                    <condition>AddState</condition>
+                    <destination>AddingState</destination>
+                    <transite_destination>AddingState</transite_destination>
+                    <transitionactions/>
+                </transition>
+                <transition type="simple">
+                    <name>add transition</name>
+                    <comment></comment>
+                    <condition>AddTransition &amp;&amp; isStartingFromState</condition>
+                    <destination>AddingTransition</destination>
+                    <transite_destination>AddingTransition</transite_destination>
+                    <transitionactions>
+                        <action type="output">setPointerToCross</action>
+                    </transitionactions>
+                </transition>
+                <transition type="simple">
+                    <name>choose source state</name>
+                    <comment></comment>
+                    <condition>AddTransition</condition>
+                    <destination>ChooseSource</destination>
+                    <transite_destination>ChooseSource</transite_destination>
+                    <transitionactions/>
                 </transition>
             </transitions>
         </state>
@@ -262,34 +286,10 @@
                 <data classname="GSaver"/>
             </meta>
             <data classname="GStateSaver">
-                <qstring name="stateName">Normal</qstring>
-                <QPoint name="position">
-                    <int>5156</int>
-                    <int>5279</int>
-                </QPoint>
-            </data>
-        </class>
-        <class classname="GStateSaver">
-            <meta classname="GSaver">
-                <data classname="GSaver"/>
-            </meta>
-            <data classname="GStateSaver">
                 <qstring name="stateName">AddingState</qstring>
                 <QPoint name="position">
                     <int>5135</int>
                     <int>5065</int>
-                </QPoint>
-            </data>
-        </class>
-        <class classname="GStateSaver">
-            <meta classname="GSaver">
-                <data classname="GSaver"/>
-            </meta>
-            <data classname="GStateSaver">
-                <qstring name="stateName">EnterStateName</qstring>
-                <QPoint name="position">
-                    <int>5426</int>
-                    <int>5123</int>
                 </QPoint>
             </data>
         </class>
@@ -317,19 +317,28 @@
                 </QPoint>
             </data>
         </class>
-        <class classname="GTransitionSaver">
+        <class classname="GStateSaver">
             <meta classname="GSaver">
                 <data classname="GSaver"/>
             </meta>
-            <data classname="GTransitionSaver">
+            <data classname="GStateSaver">
+                <qstring name="stateName">EnterStateName</qstring>
+                <QPoint name="position">
+                    <int>5426</int>
+                    <int>5123</int>
+                </QPoint>
+            </data>
+        </class>
+        <class classname="GStateSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GStateSaver">
                 <qstring name="stateName">Normal</qstring>
-                <int name="transition">0</int>
-                <qvaluelist name="points">
-                    <QPoint>
-                        <int>5130</int>
-                        <int>5193</int>
-                    </QPoint>
-                </qvaluelist>
+                <QPoint name="position">
+                    <int>5156</int>
+                    <int>5279</int>
+                </QPoint>
             </data>
         </class>
         <class classname="GTransitionSaver">
@@ -358,51 +367,6 @@
                     <QPoint>
                         <int>5206</int>
                         <int>5190</int>
-                    </QPoint>
-                </qvaluelist>
-            </data>
-        </class>
-        <class classname="GTransitionSaver">
-            <meta classname="GSaver">
-                <data classname="GSaver"/>
-            </meta>
-            <data classname="GTransitionSaver">
-                <qstring name="stateName">Normal</qstring>
-                <int name="transition">1</int>
-                <qvaluelist name="points">
-                    <QPoint>
-                        <int>5357</int>
-                        <int>5312</int>
-                    </QPoint>
-                </qvaluelist>
-            </data>
-        </class>
-        <class classname="GTransitionSaver">
-            <meta classname="GSaver">
-                <data classname="GSaver"/>
-            </meta>
-            <data classname="GTransitionSaver">
-                <qstring name="stateName">Normal</qstring>
-                <int name="transition">2</int>
-                <qvaluelist name="points">
-                    <QPoint>
-                        <int>5130</int>
-                        <int>5370</int>
-                    </QPoint>
-                </qvaluelist>
-            </data>
-        </class>
-        <class classname="GTransitionSaver">
-            <meta classname="GSaver">
-                <data classname="GSaver"/>
-            </meta>
-            <data classname="GTransitionSaver">
-                <qstring name="stateName">ChooseSource</qstring>
-                <int name="transition">0</int>
-                <qvaluelist name="points">
-                    <QPoint>
-                        <int>5343</int>
-                        <int>5490</int>
                     </QPoint>
                 </qvaluelist>
             </data>
@@ -456,6 +420,36 @@
                 <data classname="GSaver"/>
             </meta>
             <data classname="GTransitionSaver">
+                <qstring name="stateName">AddingTransition</qstring>
+                <int name="transition">3</int>
+                <qvaluelist name="points">
+                    <QPoint>
+                        <int>5309</int>
+                        <int>5342</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class classname="GTransitionSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GTransitionSaver">
+                <qstring name="stateName">ChooseSource</qstring>
+                <int name="transition">0</int>
+                <qvaluelist name="points">
+                    <QPoint>
+                        <int>5343</int>
+                        <int>5490</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class classname="GTransitionSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GTransitionSaver">
                 <qstring name="stateName">ChooseSource</qstring>
                 <int name="transition">1</int>
                 <qvaluelist name="points">
@@ -464,6 +458,16 @@
                         <int>5402</int>
                     </QPoint>
                 </qvaluelist>
+            </data>
+        </class>
+        <class classname="GTransitionSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GTransitionSaver">
+                <qstring name="stateName">ChooseSource</qstring>
+                <int name="transition">2</int>
+                <qvaluelist name="points"/>
             </data>
         </class>
         <class classname="GTransitionSaver">
@@ -504,6 +508,51 @@
                 <qstring name="stateName">EnterStateName</qstring>
                 <int name="transition">2</int>
                 <qvaluelist name="points"/>
+            </data>
+        </class>
+        <class classname="GTransitionSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GTransitionSaver">
+                <qstring name="stateName">Normal</qstring>
+                <int name="transition">0</int>
+                <qvaluelist name="points">
+                    <QPoint>
+                        <int>5130</int>
+                        <int>5193</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class classname="GTransitionSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GTransitionSaver">
+                <qstring name="stateName">Normal</qstring>
+                <int name="transition">1</int>
+                <qvaluelist name="points">
+                    <QPoint>
+                        <int>5357</int>
+                        <int>5312</int>
+                    </QPoint>
+                </qvaluelist>
+            </data>
+        </class>
+        <class classname="GTransitionSaver">
+            <meta classname="GSaver">
+                <data classname="GSaver"/>
+            </meta>
+            <data classname="GTransitionSaver">
+                <qstring name="stateName">Normal</qstring>
+                <int name="transition">2</int>
+                <qvaluelist name="points">
+                    <QPoint>
+                        <int>5130</int>
+                        <int>5370</int>
+                    </QPoint>
+                </qvaluelist>
             </data>
         </class>
     </graphics>

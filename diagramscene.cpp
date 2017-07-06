@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsLineItem>
+#include <QKeyEvent>
 
 #include <QtDebug>
 #include <QLoggingCategory>
@@ -79,6 +80,13 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
     }
 }
 
+bool DiagramScene::handleCancel(QKeyEvent * event)
+{
+    m_eventHandle = Forward;
+    if (event && event->matches(QKeySequence::Cancel) )
+        fsm.processEvent(DiagramSceneFSM::Cancel, QVariantMap());
+    return m_eventHandle == Accept;
+}
 
 void DiagramScene::setStateMachine( QSharedPointer<StateMachine> fsm )
 {

@@ -10,7 +10,9 @@ EditorEvent::EditorEvent(QWidget *parent)
     ui->setupUi( this );
     connect(ui->nameField, &QLineEdit::textChanged, [=] ( const QString &newValue ) {
         SCOPE_GUARD(m_editing);
-        object()->parent()->undoStack()->push(object()->renameCommand(newValue));
+        auto cmd = object()->renameCommand(newValue);
+        if (cmd)
+            object()->parent()->undoStack()->push(cmd);
     });
     connect(ui->commentField, &QPlainTextEdit::textChanged, [=] () {
         SCOPE_GUARD(m_editing);

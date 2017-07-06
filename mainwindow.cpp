@@ -122,6 +122,14 @@ MainWindow::MainWindow(QWidget *parent) :
     fileNew();
 }
 
+bool MainWindow::event(QEvent *event)
+{
+    if (event->type() == QEvent::KeyPress)
+        return m_scene->handleCancel(dynamic_cast<QKeyEvent*>(event));
+
+    return QMainWindow::event(event);
+}
+
 void MainWindow::changeEvent(QEvent *e)
 {
     QMainWindow::changeEvent(e);
