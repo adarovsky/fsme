@@ -18,6 +18,11 @@ EditorRoot::EditorRoot(QWidget *parent)
         auto cmd = new RootChangeCommentCommand( object(), ui->commentField->toPlainText() );
         object()->parent()->undoStack()->push( cmd );
     });
+    connect(ui->baseClassField,&QLineEdit::textChanged, [=] ( const QString &newValue ) {
+        SCOPE_GUARD(m_editing);
+        auto cmd = new RootChangeBaseClassCommand( object(), newValue );
+        object()->parent()->undoStack()->push( cmd );
+    });
     connect(ui->initialStateCombo, &QComboBox::currentTextChanged, [=] (const QString& text) {
         SCOPE_GUARD(m_editing);
         QString old = object()->initialState();
@@ -51,6 +56,11 @@ void EditorRoot::updateUI()
     {
         QSignalBlocker _b(ui->commentField);
         ui->commentField->setPlainText( object()->comment() );
+    }
+
+    {
+        QSignalBlocker _b(ui->baseClassField);
+        ui->baseClassField->setText( object()->baseClass() );
     }
 
     {

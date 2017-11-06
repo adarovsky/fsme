@@ -13,9 +13,6 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <property name="toolButtonStyle">
-   <enum>Qt::ToolButtonFollowStyle</enum>
-  </property>
   <property name="documentMode">
    <bool>true</bool>
   </property>

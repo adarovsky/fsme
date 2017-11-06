@@ -125,7 +125,7 @@ QDomNode State::save( QDomDocument doc )
         auto b = i->toStrongRef();
         if (!b) continue; // skip empty
         QDomElement eAction = doc.createElement( "action" );
-        eAction.setAttribute( "type", b.dynamicCast<State>() ? "state" : "event" );
+        eAction.setAttribute( "type", b.dynamicCast<Output>() ? "output" : "event" );
         QDomText actionText = doc.createTextNode( b->name() );
         eIncome.appendChild( eAction );
         eAction.appendChild( actionText );
@@ -137,7 +137,7 @@ QDomNode State::save( QDomDocument doc )
         auto b = i->toStrongRef();
         if (!b) continue; // skip empty
         QDomElement eAction = doc.createElement( "action" );
-        eAction.setAttribute( "type", b.dynamicCast<State>() ? "state" : "event" );
+        eAction.setAttribute( "type", b.dynamicCast<Output>() ? "output" : "event" );
         QDomText actionText = doc.createTextNode( b->name() );
         eOutcome.appendChild( eAction );
         eAction.appendChild( actionText );

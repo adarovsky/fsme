@@ -55,6 +55,17 @@ void Root::setComment(const QString &comment)
     parent()->informItemChanged(this, Qt::WhatsThisRole);
 }
 
+QString Root::baseClass() const
+{
+    return parent()->baseClass;
+}
+
+void Root::setBaseClass(const QString &baseClass)
+{
+    parent()->baseClass = baseClass;
+    parent()->informItemChanged(this, StateMachine::ContentChangedRole);
+}
+
 QString Root::initialState() const
 {
     return parent()->initialState;

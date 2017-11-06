@@ -61,6 +61,32 @@ bool RootChangeCommentCommand::mergeWith(const QUndoCommand * command)
     return false;
 }
 
+RootChangeBaseClassCommand::RootChangeBaseClassCommand(Root * e, const QString& newBaseClass, QUndoCommand * parent)
+    : RootUndoCommand(e, QObject::tr("change base class"), parent), m_oldBaseClass(e->baseClass()), m_newBaseClass(newBaseClass)
+{
+}
+
+void RootChangeBaseClassCommand::undo()
+{
+    RootUndoCommand::undo();
+    root()->setBaseClass( m_oldBaseClass );
+}
+void RootChangeBaseClassCommand::redo()
+{
+    root()->setBaseClass( m_newBaseClass );
+    RootUndoCommand::redo();
+}
+
+bool RootChangeBaseClassCommand::mergeWith(const QUndoCommand * command)
+{
+    auto other = dynamic_cast<const RootChangeBaseClassCommand*>( command );
+    if (other) {
+        m_newBaseClass = other->m_newBaseClass;
+        return true;
+    }
+    return false;
+}
+
 RootChangeInitialStateCommand::RootChangeInitialStateCommand(Root * e, const QString& newInitialstate, QUndoCommand * parent)
     : RootUndoCommand(e, QObject::tr("change initialstate"), parent), m_oldInitialState(e->initialState()), m_newInitialState(newInitialstate)
 {

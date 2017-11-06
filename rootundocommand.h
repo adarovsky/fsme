@@ -33,6 +33,18 @@ public:
     virtual void redo() override;
 };
 
+class RootChangeBaseClassCommand : public RootUndoCommand {
+    QString m_oldBaseClass;
+    QString m_newBaseClass;
+public:
+    RootChangeBaseClassCommand(Root * e, const QString& newName, QUndoCommand * parent = nullptr);
+    virtual int id() const Q_DECL_OVERRIDE { return 101 + EIOBase::UndoIDRoot; }
+    bool mergeWith(const QUndoCommand *) Q_DECL_OVERRIDE;
+
+    virtual void undo() override;
+    virtual void redo() override;
+};
+
 class RootChangeInitialStateCommand : public RootUndoCommand {
     QString m_oldInitialState;
     QString m_newInitialState;

@@ -19,6 +19,9 @@ public:
     virtual QString comment() const Q_DECL_OVERRIDE;
     virtual void setComment(const QString& comment) Q_DECL_OVERRIDE;
 
+    virtual QString baseClass() const;
+    virtual void setBaseClass(const QString& baseClass);
+
     virtual QString initialState() const;
     virtual void setInitialState(const QString& initialState);
 
