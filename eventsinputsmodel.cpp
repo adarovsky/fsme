@@ -53,7 +53,7 @@ void EventsInputsModel::setSourceModel(QAbstractItemModel *sourceModel)
 
     connect(sourceModel, &QAbstractItemModel::dataChanged, this, [=](const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles) {
         auto fsm = dynamic_cast<StateMachine*>(sourceModel);
-        if (fsm && topLeft.parent() == fsm->eventsFolder() || topLeft.parent() == fsm->inputsFolder()) {
+        if (fsm && (topLeft.parent() == fsm->eventsFolder() || topLeft.parent() == fsm->inputsFolder())) {
             emit dataChanged(mapFromSource(topLeft), mapFromSource(bottomRight), roles);
         }
     });

@@ -1,5 +1,5 @@
 #include <QIcon>
-#include "TransitionTargetsModel.h"
+#include "transitiontargetsmodel.h"
 #include "statemachine.h"
 
 TransitionTargetsModel::TransitionTargetsModel()

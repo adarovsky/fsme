@@ -25,7 +25,7 @@ void DiagramTransitionItem::updateGeometry()
     if (!t) return;
 
     QSharedPointer<State> source = t->parentState();
-    QSharedPointer<State> destination = t->target.toStrongRef() ?: source;
+    QSharedPointer<State> destination = t->target ? t->target.toStrongRef() : source;
     if (!source) return;
 
     DiagramStateItem * sg = dynamic_cast<DiagramScene*>( scene() )->graphicState( source );
@@ -130,7 +130,7 @@ void DiagramTransitionItem::updateEnds()
     if (!t) return;
 
     QSharedPointer<State> source = t->parentState();
-    QSharedPointer<State> destination = t->target.toStrongRef() ?: source;
+    QSharedPointer<State> destination = t->target ? t->target.toStrongRef() : source;
     if (!source) return;
 
     DiagramStateItem * sg = dynamic_cast<DiagramScene*>( scene() )->graphicState( source );
