@@ -2,6 +2,7 @@
 #include <QBrush>
 #include <QtDebug>
 #include <QPainter>
+#include <QPalette>
 #include <QUndoCommand>
 #include <QGraphicsSceneHoverEvent>
 #include <QGraphicsSceneMouseEvent>
@@ -21,7 +22,7 @@ DiagramTransitionManipulator::DiagramTransitionManipulator()
     : QGraphicsPathItem(), m_fsm(this), m_editingTransition( nullptr ), m_hoverPoint(), m_hoverVisible( false )
 {
     setAcceptHoverEvents( true );
-    setPen( QPen( QBrush( Qt::black ), 3) );
+    setPen( QPen( QGuiApplication::palette().color(QPalette::WindowText), 3) );
 }
 
 void DiagramTransitionManipulator::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
@@ -154,7 +155,7 @@ void DiagramTransitionManipulator::paint(QPainter *painter, const QStyleOptionGr
     QGraphicsPathItem::paint( painter, option, widget );
     if( !m_editingTransition ) return;
 
-    painter->setBrush( QBrush( Qt::black ) );
+    painter->setBrush( QBrush( QGuiApplication::palette().color(QPalette::WindowText) ) );
     foreach (auto cp, m_editingTransition->controlPoints()) {
         if ( m_hoverVisible && QLineF(cp, m_hoverPoint).length() < 10 )
             painter->drawEllipse( cp, 5, 5 );

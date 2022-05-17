@@ -11,8 +11,8 @@ class EditorTransition;
 
 class AvailableActionsModel;
 class EventsInputsModel;
-class EIOHighlighter;
 class QCompleter;
+class EIOHighlighter;
 class TransitionTargetsModel;
 class EditorTransition : public QWidget,
                          public EditorBase

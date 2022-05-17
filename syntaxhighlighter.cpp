@@ -23,6 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <qapplication.h>
 #include <QLoggingCategory>
+#include <QGuiApplication>
+#include <QPalette>
 
 Q_DECLARE_LOGGING_CATEGORY(EIOHighlighterLogging)
 Q_LOGGING_CATEGORY(EIOHighlighterLogging, "fsm.highlighter")
@@ -50,6 +52,10 @@ void EIOHighlighter::highlightBlock(const QString &text)
 
     QStringList l;
     ParType t( ParType::Boolean, 0 );
+
+    int lightness = QGuiApplication::palette().color(QPalette::WindowText).lightness();
+    qDebug() << "lightness: " << lightness;
+    bool isDark = lightness > 100;
 
     int errorPos = -1;
     try {
@@ -82,21 +88,21 @@ void EIOHighlighter::highlightBlock(const QString &text)
     while( !s->curLex().match(Eof) ) {
         Lex l = s->curLex();
         if( l.lexPos() == errorPos ) {
-            setFormat( l.lexPos(), l.lexText().length(), errorColor );
+            setFormat( l.lexPos(), l.lexText().length(), isDark ? errorColor.lighter() : errorColor );
         }
         else {
             if( l.match(Indent) ) {
                 if( stateMachine()->findEvent( l.lexText() ) ) {
-                    setFormat( l.lexPos(), l.lexText().length(), eventColor );
+                    setFormat( l.lexPos(), l.lexText().length(), isDark ? eventColor.lighter() : eventColor );
                 }
                 else if( stateMachine()->findInput( l.lexText() ) ) {
-                    setFormat( l.lexPos(), l.lexText().length(), inputColor );
+                    setFormat( l.lexPos(), l.lexText().length(), isDark ? inputColor.lighter() : inputColor );
                 }
                 else if( l.lexText() == "true" || l.lexText() == "false" ) {
-                    setFormat( l.lexPos(), l.lexText().length(), constColor );
+                    setFormat( l.lexPos(), l.lexText().length(), isDark ? constColor.lighter() : constColor );
                 }
                 else {
-                    setFormat( l.lexPos(), l.lexText().length(), errorColor );
+                    setFormat( l.lexPos(), l.lexText().length(), isDark ? errorColor.lighter() : errorColor );
                 }
             }
             else if( l.match(lkLbracket) ||
@@ -104,10 +110,11 @@ void EIOHighlighter::highlightBlock(const QString &text)
                      l.match(Disjunction)||
                      l.match(Conjunction)||
                      l.match(lkExclamation) ) {
-                setFormat( l.lexPos(), l.lexText().length(), punctColor );
+
+                setFormat( l.lexPos(), l.lexText().length(), QGuiApplication::palette().color(QPalette::WindowText) );
             }
             else {
-                setFormat( l.lexPos(), l.lexText().length(), errorColor );
+                setFormat( l.lexPos(), l.lexText().length(), isDark ? errorColor.lighter() : errorColor );
             }
         }
         s->popLex();

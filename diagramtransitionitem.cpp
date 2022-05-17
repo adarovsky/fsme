@@ -1,5 +1,8 @@
 #include <QPainterPathStroker>
+#include <QGuiApplication>
+#include <QPalette>
 #include <QPainter>
+#include <QLoggingCategory>
 #include <QtDebug>
 #include <cmath>
 
@@ -14,7 +17,7 @@ Q_LOGGING_CATEGORY(DiagramTransitionItemLogging, "graphics.diagramscene.transiti
 DiagramTransitionItem::DiagramTransitionItem(QSharedPointer<Transition> transition, QGraphicsItem *parent )
     : ChaikinArrow( parent ), m_transition(transition), m_arrowHead( 3 )
 {
-    setPen( QPen( QBrush(QColor(Qt::black)), 1) );
+    setPen( QPen( QBrush(QGuiApplication::palette().color(QPalette::WindowText)), 1) );
 
     setFlag(QGraphicsItem::ItemIsSelectable, true);
 }
@@ -178,7 +181,7 @@ void DiagramTransitionItem::paint(QPainter *painter, const QStyleOptionGraphicsI
     painter->drawPath( ChaikinArrow::path() );
 
 
-    painter->setBrush( QBrush( isSelected() ? QColor( Qt::lightGray ) : QColor( Qt::black ) ) );
+    painter->setBrush( QBrush( isSelected() ? QColor( Qt::lightGray ) : QGuiApplication::palette().color(QPalette::WindowText) ) );
     painter->drawPolygon( m_arrowHead );
 
     if ( isSelected() )
