@@ -1,9 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 import sys, types, optparse, os
 
 #import bundled MakoTemplates module
-sys.path.insert(0, os.path.join(os.path.dirname(sys.argv[0]), 'MakoTemplates.zip'))
+# sys.path.insert(0, os.path.join(os.path.dirname(sys.argv[0]), 'MakoTemplates.zip'))
 
 from xml.etree import ElementTree as tree
 from mako.runtime import Context
@@ -66,9 +66,10 @@ class Transition(Base):
 
 
 class FiniteStateMachine(Base):
-    def __init__(self, name, comment, initialState):
+    def __init__(self, name, comment, baseClass, initialState):
         Base.__init__(self, name, comment)
         self.initialState = initialState
+        self.baseClass = baseClass
         self.events = []
         self.inputs = []
         self.outputs = []
@@ -109,25 +110,29 @@ parser.add_option("-t", "--template", dest="template",
 parser.add_option("-d", "--debug", dest="debug", action="store_true", default=False,
                   help="Generate debugging information")
 
+parser.add_option("-a", "--async", dest="isAsync", action="store_true", default=False,
+                  help="Generate asynchronous FSM")
+
 (options, args) = parser.parse_args()
 
 if len(args) != 1:
-    print >> sys.stderr, "A file with finite state machine required!"
+    print("A file with finite state machine required!", file=sys.stderr)
     sys.exit(1)
 
-f = file(args[0], 'r')
+f = open(args[0], 'r')
 
 tree = tree.ElementTree(file = f)
 template = Template(filename=options.template)
 
 if (options.output != '-'):
-    output = file(options.output, 'w')
+    output = open(options.output, 'w')
 else:
     output = sys.stdout
 
 root = tree.getroot().find('statemachine')
 
-fsm = FiniteStateMachine(root.find('name').text.strip(), root.find('comment').text or '', (root.find('initialstate').text or '').strip())
+baseClass = root.find('baseclass')
+fsm = FiniteStateMachine(root.find('name').text.strip(), root.find('comment').text or '', baseClass.text if baseClass is not None else '', (root.find('initialstate').text or '').strip())
 
 for e in root.findall('event'):
     fsm.events.append( Event(e.find('name').text.strip(), e.find('comment').text or '') )
@@ -142,16 +147,24 @@ for s in root.findall('state'):
     incoming = []
     exiting = []
     for i in s.find('incomeactions'):
-        if i.get('type', 'output') == 'output':
-            incoming.append(fsm.output(i.text.strip()))
-        else:
-            incoming.append(fsm.event(i.text.strip()))
+        try:
+            if i.get('type', 'output') == 'output':
+                incoming.append(fsm.output(i.text.strip()))
+            else:
+                incoming.append(fsm.event(i.text.strip()))
+        except Exception as e:
+            print('Cannot find output \'%s\' in income actions of %s' % (i.text.strip(), s.find('name').text.strip()), file=sys.stderr)
+            raise
 
     for i in s.find('outcomeactions'):
-        if i.get('type', 'output') == 'output':
-            exiting.append(fsm.output(i.text.strip()))
-        else:
-            exiting.append(fsm.event(i.text.strip()))
+        try:
+            if i.get('type', 'output') == 'output':
+                exiting.append(fsm.output(i.text.strip()))
+            else:
+                exiting.append(fsm.event(i.text.strip()))
+        except Exception as e:
+            print('Cannot find output \'%s\' in exit actions of %s' % (i.text.strip(), s.find('name').text.strip()), file=sys.stderr)
+            raise
 
     state = State(s.find('name').text.strip(), s.find('comment').text or '', incoming, exiting)
     fsm.states.append( state )
@@ -159,15 +172,29 @@ for s in root.findall('state'):
     for t in s.find('transitions'):
         actions = []
         for i in t.find('transitionactions'):
-            if i.get('type', 'output') == 'output':
-                actions.append(fsm.output(i.text.strip()))
-            else:
-                actions.append(fsm.event(i.text.strip()))
+            try:
+                if i.get('type', 'output') == 'output':
+                    actions.append(fsm.output(i.text.strip()))
+                else:
+                    actions.append(fsm.event(i.text.strip()))
+            except Exception as e:
+                print('Cannot find output \'%s\' in %s: %s' % (i.text.strip(), s.find('name').text.strip(), t.find('name').text.strip()), file=sys.stderr)
+                raise
 
         if t.find('destination').text is not None:
             dest = t.find('destination').text.strip()
         else:
             dest = None
+
+        if not t.find('name').text:
+            raise Exception('Empty name for transition in %s' % (s.find('name').text.strip(),))
+
+        if t.get('type', 'simple').strip() != 'simple' and not dest:
+            raise Exception('Non-simple transitions should have destination, but %s:%s does not' % (state.name, s.find('name').text.strip()))
+
+        if not t.find('condition').text:
+            raise Exception('Empty condition for %s: %s' % (s.find('name').text.strip(), t.find('name').text.strip()))
+
         transition = Transition(t.find('name').text.strip(),
                                 t.find('comment').text or '',
                                 t.find('condition').text.strip(),
@@ -181,11 +208,10 @@ for s in root.findall('state'):
 
 for s in fsm.states:
     for t in s.transitions:
-        if isinstance(t.destination, types.StringTypes):
+        if isinstance(t.destination, str):
             t.destination = fsm.state(t.destination)
 
-
-        if isinstance(t.transiteDestination, types.StringTypes):
+        if isinstance(t.transiteDestination, str):
             t.transiteDestination = fsm.state(t.transiteDestination)
 
 fsm.events.sort(key=lambda e: e.name)
@@ -193,5 +219,5 @@ fsm.inputs.sort(key=lambda e: e.name)
 fsm.outputs.sort(key=lambda e: e.name)
 fsm.states.sort(key=lambda e: e.name)
 
-output.write(template.render_unicode(machine=fsm, camelCase=camelCase, capitalCase=capitalCase, options=options).encode('utf-8'))
+output.write(template.render_unicode(machine=fsm, camelCase=camelCase, capitalCase=capitalCase, options=options))
 
